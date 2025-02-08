@@ -1,0 +1,27 @@
+<!-- quotes/templates/quotes/base.html -->
+{% load static %}
+
+<html>
+    <head>
+        <title>Doechii's Quotes</title>
+        <link rel="stylesheet" href="{% static 'assignment3.css' %}">
+    </head>
+
+    <body> 
+        <div class="container">
+        <header> 
+            <h1> Doechii's Quote of the Day </h1>
+        </header>
+        <nav>
+            <li><a href="{% url 'home_page' %}">Home</a></li>
+            <li><a href="{% url 'about_page' %}">About</a></li>
+            <li><a href="{% url 'quote_page' %}">Quote of the Day</a></li>
+            <li><a href="{% url 'show_all_page' %}">Show all Quotes</a></li>
+        </nav>
+
+        <!-- Put page content here! -->
+         {% block content %}
+         {% endblock %}
+    </div>
+    </body>
+</html>

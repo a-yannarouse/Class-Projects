@@ -1,0 +1,10 @@
+<!-- quotes/templates/quotes/home.html -->
+{% extends 'quotes/base.html' %}
+
+{% block content %}
+        <h1> A quote by Doechii </h1>
+        <div class="quote-container">
+            <h3>{{ quote }}</h3>
+            <img src="{{ image|safe }}" alt="Doechii image" style="width: 500px; height: 500px; object-fit: cover;">
+        </div>
+{% endblock %}
