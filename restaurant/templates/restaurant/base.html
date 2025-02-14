@@ -1,0 +1,34 @@
+<!-- restaurant/templates/restaurant/base.html -->
+<!-- File: base.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 02/11/2025
+    Description: This is the base template for each html file I create for the application. -->
+{% load static %}
+
+<html>
+    <head>
+        <title>Footprints Cafe Express</title>'
+        <!-- Link to the CSS file for styling -->'
+        <link rel="stylesheet" href="{% static 'assignment4.css' %}">
+    </head>
+
+    <body> 
+        <!-- Main container for the page layout (with left navigation bar) -->
+        <div class="container"></div>
+            <!-- Header section with the site title -->
+            <header> 
+                <h1> Footprints Cafe Express </h1>
+            </header>
+            <!-- Navigation bar -->
+            <nav>
+                <li><a href="{% url 'main' %}">Home</a></li>
+                <li><a href="{% url 'order' %}">Order</a></li>
+            </nav>
+            <!-- Base container where page-specific content will be here -->
+            <div class="base-container">
+                <!-- Put page content here-->
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

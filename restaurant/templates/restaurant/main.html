@@ -1,0 +1,31 @@
+<!-- restaurant/templates/restaurant/main.html -->
+<!-- File: main.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 02/11/2025
+    Description: This is the main page of the application ('about us' of the restaurant) --> 
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+    <!-- Header section with welcome message and image -->
+    <div class="header-container">
+        <h1> Welcome To Footprints Cafe Express! </h1>
+        <!-- Image representing the restaurant -->
+        <img src="https://lh5.googleusercontent.com/p/AF1QipOy_cRXhMYNvDKyqpkxCaOkr87X03hfuuN0qeuy=w800-h500-k-no" alt="footprints">
+        <p>
+            Welcome to Footprints Cafe Express, where you can get the best Carribbean food in the heart of Little Haiti in Brooklyn, NYC! 
+        </p>
+    </div>
+
+    <!-- About Us section with details about the restaurant -->
+    <div class="about-container">
+        <h2> About Us </h2>
+        <ul class="info-list">
+            <li> Name: Footprints Cafe Express </li>
+            <li> Location: 1377 Flatbush Ave, Brooklyn, NY 11210 </li>
+            <li> Hours of Operations: </li>
+            <ul>
+                <li> Sunday - Thursday: 11 AM - 12 AM </li>
+                <li> Friday - Saturday: 11 AM - 1 AM </li>
+            </ul>
+        </ul>
+    </div>
+{% endblock %}

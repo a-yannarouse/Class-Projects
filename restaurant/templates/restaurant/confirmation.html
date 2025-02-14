@@ -1,0 +1,40 @@
+<!-- restaurant/templates/restaurant/confirmation.html -->
+<!-- File: confirmation.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 02/11/2025
+    Description: This is the confirmation page after the user submits the order form. 
+-->
+
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+    <div class="confirmation-container">
+        <!-- If there are ordered items, display thank you message and order details -->
+        {% if ordered_items %}
+        <h1> Thank you for ordering, {{ name }}! </h1>
+        <h3>Your Order:</h3>
+        <ul class = "order-list">
+            {% for item in ordered_items %}
+                <!-- List each ordered item with its price formatted to two decimal places -->
+                <li>{{ item.name }} - ${{ item.price|floatformat:2}}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Display the total price of the order -->
+        <p>Total Price: ${{ total_price|floatformat:2}}</p>
+
+        <!-- Display contact information -->
+        <p>We will contact you at {{ phone }} or {{ email }} if needed.</p>
+
+        {% else %}
+            <!-- If no items were ordered, display a friendly message to order :) -->
+            <h1> Aweee.... </h1>
+            <p>No items were ordered. Don't be shy, buy some food!</p>
+        {% endif %}
+
+        {% if special_instructions %}
+            <!-- If special instructions were provided, display them -->
+            <h3>Special Instructions:</h3>
+            <p>{{ special_instructions }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

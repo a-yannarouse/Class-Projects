@@ -1,0 +1,53 @@
+<!-- restaurant/templates/restaurant/order.html -->
+<!-- File: order.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 02/11/2025
+    Description: This is the order page where the user orders food from the restaurant. -->
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+    <div class="order-container">
+        <!-- Page header for the order page -->
+        <h1> Place an order here! </h1>
+
+        <!-- Order form that posts data to the confirmation view -->
+        <form action="confirmation" method="POST">
+            {% csrf_token %}
+
+            <!-- Section for selecting menu items -->
+            <h3>Select Your Items:</h3>
+            <!-- Each checkbox corresponds to a menu item -->
+            <label><input type="checkbox" name="jerk_chicken"> Jerk Chicken - $14.75</label><br>
+            <label><input type="checkbox" name="oxtail_fried_rice"> Oxtail Fried Rice - $26.00</label> <br>
+            <label><input type="checkbox" name="curry_goat_roti"> Curry Goat Roti - $14.00</label><br>
+            <label><input type="checkbox" name="shrimp_rasta_pasta"> Shrimp Rasta Pasta - $22.00</label><br>
+
+            <!-- Section for adding extra toppings/options -->
+            <div class="topping-options">
+                <h3>Add Extras:</h3> 
+                <label><input type="checkbox" name="oxtail_extra_plantains"> Extra Plantains (+$2.00) </label> <br>
+                <label><input type="checkbox" name="oxtail_extra_gravy"> Extra Gravy (+$1.50) </label> <br>
+            </div>
+
+            <!-- Section for today's special dish -->
+            <h3>Today's Special:</h3>
+            <label><input type="checkbox" name="today_special" value="{{ special }}"> {{ special }} - ${{ special_price|floatformat:2 }}  </label> <br>
+
+            <!-- Hidden input to store the price of today's special -->
+            <input type="hidden" name="today_special_price" value="{{ special_price }}">
+
+            <!-- Section for special instructions -->
+            <h3>Special Instructions</h3>
+            <textarea name="special_instructions" rows="3" cols="60" placeholder="Any special requests?"></textarea> <br>
+
+            <!-- Section for customer contact information -->
+            <h3>Customer Information</h3>
+            <label>Name:</label> <input type="text" required name="name"><br>
+            <label>Phone:</label> <input type="text" required name="phone"><br>
+            <label>Email:</label> <input type="email" required name="email"><br>
+
+            <!-- Submit Button to place the order -->
+            <h3>Place Your Order</h3>
+            <input type="submit" value="Submit Order">
+        </form>
+    </div>
+{% endblock %}
