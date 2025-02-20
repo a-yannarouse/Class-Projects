@@ -1,0 +1,29 @@
+<!-- mini_fb/base.html -->
+{% load static %} 
+
+<html>
+    <head> 
+        <title> Our Profiles </title>
+        <link rel="stylesheet" type="text/css" href="{% static 'styles-blog.css' %}">
+    </head>
+
+    <body>
+        <head> 
+            <h1> Our Profiles </h1>
+            <nav> 
+                <ul> 
+                    <li><a href="{% url 'random' %}"> Random </a></li>
+                    <li><a href="{% url 'show_all' %}"> Show all </a></li>
+                </ul>
+            </nav>
+        </head>
+
+        <!-- substitute in the specific content here -->
+        {% block content %} 
+        {% endblock %}
+        <footer>
+            This application is a mini version of Facebook.
+            Made by A'Yanna Rouse
+        </footer>
+    </body>
+</html>
