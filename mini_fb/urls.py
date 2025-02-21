@@ -3,7 +3,6 @@
 # Description: Urls for each template page of the web app
 from django.urls import path
 from .views import ShowAllProfilesView, ShowProfilePageView
-from . import views
 
 urlpatterns = [
     # URL pattern for the all_profiles page.
