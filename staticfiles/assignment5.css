@@ -1,0 +1,165 @@
+/* Base Styles */
+body {
+    margin: 30px;
+    background: #f1f4f3; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+/* Title Styling */
+h1 {
+    color: #3a4d4b;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+/* Table Container */
+.table-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+/* Profile Table */
+.profile-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Table Headers */
+.profile-table thead {
+    background: #4b7069; 
+    color: white;
+}
+
+.profile-table thead th {
+    padding: 16px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Table Rows */
+.profile-table tbody tr {
+    transition: background 0.2s ease-in-out;
+}
+
+/* Striped Table Rows */
+.profile-table tbody tr:nth-child(even) {
+    background: #f7f9f9;
+}
+
+/* Hover Effect */
+.profile-table tbody tr:hover {
+    background: #e6efef;
+}
+
+/* Table Cells */
+.profile-table td {
+    padding: 14px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+/* Profile Page Container */
+.profile-container {
+    max-width: 400px;
+    margin: 40px auto;
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Image */
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 80px;
+    object-fit: cover;
+    border: 3px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Profile Page Image */
+.profile_page-img {
+    width: 300px;
+    height: 300px;
+    border-radius: 240px;
+    object-fit: cover;
+    border: 3px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Profile Name */
+.profile-name {
+    text-decoration: none;
+    color: #2c5d63;
+    font-weight: 600;
+}
+
+.profile-name:hover {
+    text-decoration: underline;
+    color: #1e3d40;
+}
+
+/* Buttons */
+.view-profile-btn, .back-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #3a6b6a;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.view-profile-btn:hover, .back-btn:hover{
+    background: #2c5d63;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 760px) {
+    .profile-table thead th {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .profile-table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .profile-img {
+        width: 60px;
+        height: 60px;
+    }
+}
