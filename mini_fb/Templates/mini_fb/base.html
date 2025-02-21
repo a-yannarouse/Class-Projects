@@ -1,29 +1,26 @@
 <!-- mini_fb/base.html -->
+ <!-- File: base.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 02/20/2025
+    Description: This is the base template for each html file I create for this application. 
+-->
 {% load static %} 
 
 <html>
+    <!-- Header -->
     <head> 
-        <title> Our Profiles </title>
-        <link rel="stylesheet" type="text/css" href="{% static 'styles-blog.css' %}">
+        <title> Facebook </title>
+        <link rel="stylesheet" type="text/css" href="{% static 'assignment5.css' %}">
     </head>
 
     <body>
-        <head> 
-            <h1> Our Profiles </h1>
-            <nav> 
-                <ul> 
-                    <li><a href="{% url 'random' %}"> Random </a></li>
-                    <li><a href="{% url 'show_all' %}"> Show all </a></li>
-                </ul>
-            </nav>
-        </head>
-
         <!-- substitute in the specific content here -->
         {% block content %} 
         {% endblock %}
+
+        <!-- Footer -->
         <footer>
             This application is a mini version of Facebook.
-            Made by A'Yanna Rouse
+            Made by A'Yanna Rouse.
         </footer>
     </body>
 </html>

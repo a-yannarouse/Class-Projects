@@ -1,23 +1,55 @@
 <!-- mini_fb/show_all_profiles.html -->
+<!-- File: show_all_profiles.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 02/20/2025
+    Description: This is the template for showing all profiles in the mini Facebook application.
+ -->
 {% extends 'mini_fb/base.html' %}
 
-<h1> Showing all Profiles </h1>
 {% block content %}
-<main class = "grid-container">
-    {% for Profile in Profiles %}
-    <Profile>
-        <div> 
-            <h2> {{Profile.first_name}} </h2>
-            <h2> {{Profile.last_name}} </h2>
-            <h3> {{Profile.city}} </h3>
-        </div>
+<h1>Showing All Profiles</h1>
 
-        {% if Profile.image_url %}
-        <img src="{{Profile.image_url}}" alt="Profile Picture" style="width:100px;height:100px;"> 
-        {% endif %}
-    </Profile>
-    <hr>
-    {% endfor %}
-</main>
+<div class="table-container">
+    <table class="profile-table">
+        <!-- Table Header -->
+        <thead>
+            <tr>
+                <th>Profile Image</th>
+                <th>Name</th>
+                <th>City</th>
+                <th>Profile Link</th>
+            </tr>
+        </thead>
+        
+        <!-- Table Body -->
+        <tbody>
+            {% for profile in Profiles %}
+            <tr>
+                <!-- Profile Image -->
+                <td>
+                    <a href="{% url 'show_profile' profile.pk %}">
+                        <img src="{{ profile.image_url }}" class="profile-img">
+                    </a>
+                </td>
+                
+                <!-- Name -->
+                <td>
+                    <a href="{% url 'show_profile' profile.pk %}">
+                        {{ profile.first_name }} {{ profile.last_name }}
+                    </a>
+                </td>
+
+                <!-- City -->
+                <td>{{ profile.city }}</td>
+
+                <!-- Profile Link -->
+                <td>
+                    <a href="{% url 'show_profile' profile.pk %}" class="view-profile-btn">View Profile</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
+
           

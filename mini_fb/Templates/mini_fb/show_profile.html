@@ -1,0 +1,26 @@
+<!-- mini_fb/show_profile.html -->
+<!-- File: show_all_profiles.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 02/20/2025
+    Description: This is the template for showing each profile in the mini Facebook application.
+-->
+{% extends 'mini_fb/base.html' %}
+
+{% block content %}
+
+<!-- Display the profile image, name, city, email, and a back button to return to the list of profiles -->
+
+<div class="profile-container">
+    <!-- Display the profile image -->
+    <img src="{{ Profile.image_url }}" class="profile_page-img">
+
+    <!-- Display the profile name, city, and email -->
+    <h1>{{ Profile.first_name }} {{ Profile.last_name }}</h1>
+    <h2>{{ Profile.city }}</h2>
+    <p>{{ Profile.email }}</p>
+
+    <!-- Back button to return to the list of profiles -->
+    <a href="{% url 'show_all_profiles' %}" class="back-btn">← Back to Profiles</a>
+</div>
+{% endblock %}
+
+          

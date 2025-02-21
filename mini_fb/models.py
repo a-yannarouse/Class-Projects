@@ -1,3 +1,6 @@
+# File: models.py
+# Author: A'Yanna Rouse (yanni620@bu.edu), 02/20/2025
+# Description: This file contains the model for the Profile object.
 from django.db import models
 
 # Create your models here.
