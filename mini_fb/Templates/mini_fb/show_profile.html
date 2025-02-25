@@ -14,10 +14,17 @@
     <img src="{{ Profile.image_url }}" class="profile_page-img">
 
     <!-- Display the profile name, city, and email -->
-    <h1>{{ Profile.first_name }} {{ Profile.last_name }}</h1>
-    <h2>{{ Profile.city }}</h2>
-    <p>{{ Profile.email }}</p>
+    <h1> {{ Profile.first_name }} {{ Profile.last_name }} </h1>
+    <h2> {{ Profile.city }} </h2>
+    <p> {{ Profile.email }} </p>
 
+    <!-- Display the Profile's Status -->
+    <h3>Status:</h3>
+    {% for message in Profile.get_status_messages %}
+        <p> {{ message }} </p>
+    {% endfor %}
+
+    <br>
     <!-- Back button to return to the list of profiles -->
     <a href="{% url 'show_all_profiles' %}" class="back-btn">← Back to Profiles</a>
 </div>
