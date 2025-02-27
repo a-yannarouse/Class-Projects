@@ -1,0 +1,31 @@
+<!-- mini_fb/create_status_form.html -->
+<!-- File: create_status_form.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 02/26/2025
+    Description: This is the template for showing the form to create a new status message in the mini Facebook application. 
+-->
+
+{% extends 'mini_fb/base.html' %}
+
+{% block content %}
+<div class="profile-container">
+    <!-- Display the form to create a new status message -->
+    <h1>Create a New Status Message</h1>
+    <form method="post">
+        {% csrf_token %}
+        <table class="profile-form-table">
+          <tr>
+            <!-- Status Message -->
+            <th> Status Message </th>
+            <td><input type="text" name="message" required id="id_message" class="form-input"></td>
+          </tr>
+          <tr>
+            <!-- Submit and Cancel Buttons -->
+            <td colspan="2" class="form-buttons">
+                <button type="submit" class="submit-btn">Create Status Message</button>
+                <a href="{% url 'show_all_profiles' %}" class="back-btn">Cancel</a>
+            </td>
+          </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

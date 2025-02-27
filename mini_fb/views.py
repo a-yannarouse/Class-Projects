@@ -2,12 +2,15 @@
 # Author: A'Yanna Rouse (yanni620@bu.edu), 02/20/2025
 # Description: These are for the views for the mini_fb app, to show the profiles.
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
+from .forms import CreateProfileForm, CreateStatusMessageForm
 from .models import Profile
+from django.urls import reverse
 
 # Create your views here.
 class ShowAllProfilesView(ListView):
     ''' Define a view class to show all blog articles. '''
+
     # Defines the model, template, and context object name for the all profiles page
     model = Profile
     template_name = "mini_fb/show_all_profiles.html"
@@ -15,7 +18,68 @@ class ShowAllProfilesView(ListView):
 
 class ShowProfilePageView(DetailView):
     ''' Define a view class to show all blog articles. '''
+
     # Defines the model, template, and context object name for the singular profile page
     model = Profile
     template_name = "mini_fb/show_profile.html"
     context_object_name = "Profile"
+
+class CreateProfileView(CreateView):
+    ''' A view to handle creation of a new Profile.
+        (1) display the HTML form to user (GET)
+        (2) process the form submission and store the new profile object (POST)
+    '''
+
+    form_class = CreateProfileForm
+    template_name = "mini_fb/create_profile_form.html"
+    
+    def form_valid(self, form):
+        ''' Save the form data to the database.'''
+        form.save()
+        return super().form_valid(form)
+    
+class CreateStatusMessageView(CreateView):
+    ''' A view to handle creation of a new status message on a Profile.'''
+
+    form_class = CreateStatusMessageForm
+    template_name = "mini_fb/create_status_form.html"
+    
+    def get_context_data(self, **kwargs):
+        ''' Return the dictionary of context variables for use in the template.'''
+        
+        # calling the superclass method
+        context = super().get_context_data(**kwargs)
+
+        # find/all the article to the context data
+        # retrieve the PK from the URL pattern
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+
+        # add this article into the context dictionary
+        context['Profile'] = profile
+        return context
+    
+    def form_valid(self, form):
+        ''' This method handles the form and saves the new object to the Django database.
+        We need to add the foreign key (of the Article) to the Comment object before saving 
+        it to the database. 
+        '''
+
+        # instrument our code to display form fields: 
+        print(f"CreateCommentView.form_valid: form.cleaned_data={form.cleaned_data}")
+
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+        # attach the article to the comment
+        form.instance.profile = profile # set the FK
+
+        # delegate the work to the superclass methom form_valid:
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        ''' Provide a URL to redirect to after creating a new comment.'''
+
+        # retrieve the PK from the URL pattern
+        pk = self.kwargs['pk']
+        # call reverse to generate the URL for this article
+        return reverse('show_profile', kwargs={'pk': pk})

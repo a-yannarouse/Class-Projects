@@ -2,6 +2,8 @@
 # Author: A'Yanna Rouse (yanni620@bu.edu), 02/20/2025
 # Description: This file contains the model for the Profile object.
 from django.db import models
+from django import forms
+from django.urls import reverse
 
 # Create your models here.
 class Profile(models.Model):
@@ -18,9 +20,13 @@ class Profile(models.Model):
         ''' Return a string representation of this model instance.'''
         return f'{self.first_name} {self.last_name}'
     
+    def get_absolute_url(self):
+        ''' Return a URL to display one instance of this object.'''
+        return reverse('show_profile', kwargs={'pk': self.pk})
+    
     def get_status_messages(self):
         ''' Return all status messages for this profile.'''
-        return StatusMessage.objects.filter(profile=self).order_by('-timestamp')
+        return StatusMessage.objects.filter(profile=self).order_by('timestamp')
     
 class StatusMessage(models.Model):
     ''' Encapsulate the data of a status message.'''
@@ -33,3 +39,38 @@ class StatusMessage(models.Model):
     def __str__(self):
         ''' Return a string representation of this model instance.'''
         return f'{self.message}'
+    
+class CreateProfileForm(forms.ModelForm):
+    '''Form to add a new profile to the database.'''
+
+    first_name = forms.CharField(
+        label="First Name", 
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'custom-input'})
+    )
+    last_name = forms.CharField(
+        label="Last Name", 
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'custom-input'})
+    )
+    city = forms.CharField(
+        label="City", 
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'custom-input'})
+    )
+    email = forms.EmailField(
+        label="Email", 
+        required=True,
+        # Using TextInput here instead of EmailInput to match the style
+        widget=forms.TextInput(attrs={'class': 'custom-input'})
+    )
+    image_url = forms.URLField(
+        label="Image URL", 
+        required=False,
+        # Similarly, using TextInput to maintain consistency
+        widget=forms.TextInput(attrs={'class': 'custom-input'})
+    )
+
+    class Meta:
+        model = Profile
+        fields = ['first_name', 'last_name', 'city', 'email', 'image_url']

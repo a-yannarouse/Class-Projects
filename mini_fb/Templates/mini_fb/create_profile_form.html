@@ -1,0 +1,54 @@
+<!-- mini_fb/create_profile_form.html -->
+<!-- File: create_profile_form.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 02/26/2025
+    Description: This is the template for showing the form to create a new profile in the mini Facebook application. 
+-->
+
+{% extends 'mini_fb/base.html' %}
+
+{% block content %}
+
+<!-- Display the profile image, name, city, email, URL, and buttons to either return to the profiles or create a new profile. -->
+
+<div class="profile-container">
+    <h1>Create Your Profile</h1>
+    <form method="post" action="{% url 'create_profile' %}">
+        {% csrf_token %}
+        <table class="profile-form-table">
+          <tr>
+            <!-- First Name -->
+            <th><label for="id_first_name">First Name</label></th>
+            <td><input type="text" name="first_name" required id="id_first_name" class="form-input"></td>
+          </tr>
+          <tr>
+            <!-- Last Name -->
+            <th><label for="id_last_name">Last Name</label></th>
+            <td><input type="text" name="last_name" required id="id_last_name" class="form-input"></td>
+          </tr>
+          <tr>
+            <!-- City -->
+            <th><label for="id_city">City</label></th>
+            <td><input type="text" name="city" required id="id_city" class="form-input"></td>
+          </tr>
+          <tr>
+            <!-- Email -->
+            <th><label for="id_email">Email</label></th>
+            <td><input type="email" name="email" maxlength="320" required id="id_email" class="form-input"></td>
+          </tr>
+          <tr>
+            <!-- Image URL -->
+            <th><label for="id_image_url">Image URL</label></th>
+            <td><input type="url" name="image_url" id="id_image_url" class="form-input"></td>
+          </tr>
+          <tr>
+            <!-- Submit and Cancel Buttons -->
+            <td colspan="2" class="form-buttons">
+                <button type="submit" class="submit-btn">Create Profile</button>
+                <a href="{% url 'show_all_profiles' %}" class="back-btn">Cancel</a>
+            </td>
+          </tr>
+        </table>
+    </form>
+</div>
+
+{% endblock %}

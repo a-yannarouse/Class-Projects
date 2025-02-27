@@ -21,10 +21,13 @@
     <!-- Display the Profile's Status -->
     <h3>Status:</h3>
     {% for message in Profile.get_status_messages %}
-        <p> {{ message }} </p>
+        <p> {{ message.timestamp }} - {{ message }} </p>
     {% endfor %}
 
     <br>
+    <!-- Button to create a new status -->
+    <a href="{% url 'create_status' Profile.id %}" class="create-status-btn">Create Status</a>
+    <br><br><br>
     <!-- Back button to return to the list of profiles -->
     <a href="{% url 'show_all_profiles' %}" class="back-btn">← Back to Profiles</a>
 </div>
