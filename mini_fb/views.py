@@ -9,7 +9,7 @@ from django.urls import reverse
 
 # Create your views here.
 class ShowAllProfilesView(ListView):
-    ''' Define a view class to show all blog articles. '''
+    ''' Define a view class to show all profiles. '''
 
     # Defines the model, template, and context object name for the all profiles page
     model = Profile
@@ -17,7 +17,7 @@ class ShowAllProfilesView(ListView):
     context_object_name = "Profiles"
 
 class ShowProfilePageView(DetailView):
-    ''' Define a view class to show all blog articles. '''
+    ''' Define a view class to show all profiles. '''
 
     # Defines the model, template, and context object name for the singular profile page
     model = Profile
