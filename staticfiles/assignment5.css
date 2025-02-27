@@ -129,8 +129,14 @@ footer {
     color: #1e3d40;
 }
 
+/* Style for the create-profile-container */
+.create-profile-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
 /* Buttons */
-.view-profile-btn, .back-btn {
+.view-profile-btn {
     display: inline-block;
     padding: 10px 20px;
     background: #3a6b6a;
@@ -142,8 +148,100 @@ footer {
     transition: background 0.3s;
 }
 
-.view-profile-btn:hover, .back-btn:hover{
+/* Style for the create-profile-btn */
+.create-profile-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #3a6b6a;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.view-profile-btn:hover, .create-profile-btn:hover {
     background: #2c5d63;
+}
+
+/* Profile Form Table */
+.profile-form-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 10px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+/* Table Headers (Labels) */
+.profile-form-table th {
+    text-align: right;
+    font-weight: 600;
+    padding-right: 10px;
+    color: #333;
+}
+
+/* Table Inputs */
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Form Buttons */
+.form-buttons {
+    text-align: center;
+    padding-top: 20px;
+}
+
+/* Create Profile Buttons */
+.submit-btn, .back-btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.submit-btn {
+    background-color: #3a6b6a;
+    color: white;
+    transition: background 0.3s;
+}
+
+.submit-btn:hover, .create-status-btn:hover {
+    background-color: #2c5d63;
+}
+
+/* Back Button */
+.back-btn {
+    background-color: #5c7370;
+    color: white;
+    transition: background 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #4a5d5b;
+}
+
+/* Style for the create-status-container */
+.create-status-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #3a6b6a;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /* Responsive Adjustments */

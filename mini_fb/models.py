@@ -41,35 +41,14 @@ class StatusMessage(models.Model):
         return f'{self.message}'
     
 class CreateProfileForm(forms.ModelForm):
-    '''Form to add a new profile to the database.'''
+    ''' Form to add a new article to the database.'''
 
-    first_name = forms.CharField(
-        label="First Name", 
-        required=True,
-        widget=forms.TextInput(attrs={'class': 'custom-input'})
-    )
-    last_name = forms.CharField(
-        label="Last Name", 
-        required=True,
-        widget=forms.TextInput(attrs={'class': 'custom-input'})
-    )
-    city = forms.CharField(
-        label="City", 
-        required=True,
-        widget=forms.TextInput(attrs={'class': 'custom-input'})
-    )
-    email = forms.EmailField(
-        label="Email", 
-        required=True,
-        # Using TextInput here instead of EmailInput to match the style
-        widget=forms.TextInput(attrs={'class': 'custom-input'})
-    )
-    image_url = forms.URLField(
-        label="Image URL", 
-        required=False,
-        # Similarly, using TextInput to maintain consistency
-        widget=forms.TextInput(attrs={'class': 'custom-input'})
-    )
+    # Explicitly defining form fields to customize labels and requirements
+    first_name = forms.CharField(label="First Name", required=True)
+    last_name = forms.CharField(label="Last Name", required=True)
+    city = forms.CharField(label="City", required=True)
+    email = forms.EmailField(label="Email", required=True)
+    image_url = forms.URLField(label="Image URL", required=False)
 
     class Meta:
         model = Profile
