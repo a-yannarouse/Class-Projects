@@ -4,7 +4,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
 from .forms import CreateProfileForm, CreateStatusMessageForm
-from .models import Profile
+from .models import Profile, Image, StatusImage
 from django.urls import reverse
 
 # Create your views here.
@@ -72,6 +72,20 @@ class CreateStatusMessageView(CreateView):
         profile = Profile.objects.get(pk=pk)
         # attach the article to the comment
         form.instance.profile = profile # set the FK
+
+        # save the status message to database
+        sm = form.save()
+
+        # read the file from the form:
+        files = self.request.FILES.getlist('files')
+        for file in files:
+            # create an Image object and save it
+            image = Image(image_file=file, profile=profile)
+            image.save()
+
+            # create and save a StatusImage object
+            status_image = StatusImage(status_message=sm, image_file=image)
+            status_image.save()
 
         # delegate the work to the superclass methom form_valid:
         return super().form_valid(form)

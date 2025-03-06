@@ -1,10 +1,17 @@
-<!-- blog/create_article_form.html -->
+<!-- blog/create_article_form.html
+ Display the HTML form to create an article object.
+-->
 {% extends 'blog/base.html' %}
 
 {% block content %}
 <h1> Create a new Article </h1>
 
-<form action="{% url 'create_article' %}" method="POST">
+<!-- display the HTML form; need the enctype="multipart/form-data" to send media (binary data)
+with this form submission 
+-->
+
+<form action="{% url 'create_article' %}" method="POST"
+    enctype="multipart/form-data">
     {% csrf_token %}
     <table>
         {{ form.as_table }}

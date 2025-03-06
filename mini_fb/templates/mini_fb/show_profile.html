@@ -18,13 +18,15 @@
     <h2> {{ Profile.city }} </h2>
     <p> {{ Profile.email }} </p>
 
-    <!-- Display the Profile's Status -->
+    <!-- Display the Profile's Status and image -->
     <h3>Status:</h3>
     {% for message in Profile.get_status_messages %}
         <p> {{ message.timestamp }} - {{ message }} </p>
+        {% for img in message.get_images %}
+            <img src='{{img.image_file.url}}' alt='{{img.image_file.url}}'>
+        {% endfor %}
     {% endfor %}
-
-    <br>
+    <br><br>
     <!-- Button to create a new status -->
     <a href="{% url 'create_status' Profile.id %}" class="create-status-btn">Create Status</a>
     <br><br><br>

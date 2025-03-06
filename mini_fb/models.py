@@ -40,6 +40,13 @@ class StatusMessage(models.Model):
         ''' Return a string representation of this model instance.'''
         return f'{self.message}'
     
+    def get_images(self):
+        '''
+        Returns a QuerySet of Image objects associated with this status message
+        by following the StatusImage relationship.
+        '''
+        return Image.objects.filter(statusimage__status_message=self)
+    
 class CreateProfileForm(forms.ModelForm):
     ''' Form to add a new article to the database.'''
 
@@ -53,3 +60,27 @@ class CreateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'city', 'email', 'image_url']
+
+class Image(models.Model):
+    ''' Encapsulate the data of an image.'''
+
+    # Define the data attributes of the Image object
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+    image_file = models.ImageField(upload_to='images/')
+    caption = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        ''' Return a string representation of this model instance.'''
+        return f'Image uploaded by {self.profile} on {self.timestamp}'
+
+class StatusImage(models.Model):
+    ''' Encapsulate the data of a status image.'''
+
+    # Define the data attributes of the StatusImage object
+    image_file = models.ForeignKey(Image, on_delete=models.CASCADE)
+    status_message = models.ForeignKey(StatusMessage, on_delete=models.CASCADE)
+
+    def __str__(self):
+        ''' Return a string representation of this model instance.'''
+        return f'Image {self.image_file.id} associated with StatusMessage {self.status_message.id}'

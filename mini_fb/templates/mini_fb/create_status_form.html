@@ -10,13 +10,14 @@
 <div class="profile-container">
     <!-- Display the form to create a new status message -->
     <h1>Create a New Status Message</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <table class="profile-form-table">
           <tr>
             <!-- Status Message -->
             <th> Status Message </th>
             <td><input type="text" name="message" required id="id_message" class="form-input"></td>
+            <td><input type="file" name="files" multiple/></td>
           </tr>
           <tr>
             <!-- Submit and Cancel Buttons -->
