@@ -8,25 +8,29 @@
 
 {% block content %}
 <div class="profile-container">
-    <!-- Display the form to create a new status message -->
-    <h1>Create a New Status Message</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <table class="profile-form-table">
-          <tr>
-            <!-- Status Message -->
-            <th> Status Message </th>
-            <td><input type="text" name="message" required id="id_message" class="form-input"></td>
-            <td><input type="file" name="files" multiple/></td>
-          </tr>
-          <tr>
-            <!-- Submit and Cancel Buttons -->
-            <td colspan="2" class="form-buttons">
-                <button type="submit" class="submit-btn">Create Status Message</button>
-                <a href="{% url 'show_all_profiles' %}" class="back-btn">Cancel</a>
-            </td>
-          </tr>
-        </table>
-    </form>
+  <!-- Display the form to create a new status message -->
+  <h1>Create a New Status Message</h1>
+  <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <table class="profile-form-table">
+        <tr>
+          <!-- Status Message -->
+          <th> Status Message </th>
+          <td><input type="text" name="message" required id="id_message" class="form-input"></td>
+        </tr>
+        <tr>
+          <!-- File Input -->
+          <th> Attach Files </th>
+          <td><input type="file" name="files" required id="id_files" multiple/></td>
+        </tr>
+        <tr>
+          <!-- Submit and Cancel Buttons -->
+          <td colspan="2" class="form-buttons" style="text-align: center;">
+              <button type="submit" class="submit-btn">Create Status Message</button>
+              <a href="{% url 'show_profile' Profile.pk %}" class="back-btn">Cancel</a>
+          </td>
+        </tr>
+      </table>
+  </form>
 </div>
 {% endblock %}

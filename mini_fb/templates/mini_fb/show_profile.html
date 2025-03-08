@@ -18,21 +18,34 @@
     <h2> {{ Profile.city }} </h2>
     <p> {{ Profile.email }} </p>
 
+    <!-- Button to update the Profile -->
+    <a href="{% url 'update_profile' Profile.id %}" class="create-status-btn">Update Profile</a>
+
+    <!-- Button to create a new status -->
+    <a href="{% url 'create_status' Profile.id %}" class="create-status-btn">Create Status</a>
+
+    <br><br>
     <!-- Display the Profile's Status and image -->
     <h3>Status:</h3>
     {% for message in Profile.get_status_messages %}
-        <p> {{ message.timestamp }} - {{ message }} </p>
-        {% for img in message.get_images %}
-            <img src='{{img.image_file.url}}' alt='{{img.image_file.url}}'>
-        {% endfor %}
+        <div class="status-entry">
+            <p> {{ message.timestamp }} - {{ message }} </p>
+            {% for img in message.get_images %}
+                <img src='{{img.image_file.url}}' alt='{{img.image_file.url}}'>
+                <br><br>
+            {% endfor %}
+            <div class="status-buttons">
+                <!-- Button to update status -->
+                <a href="{% url 'update_status' message.pk %}" class="create-status-btn">Update</a>
+                <!-- Button to delete status -->
+                <a href="{% url 'delete_status' message.pk %}" class="create-status-btn">Delete?</a>
+            </div>
+        </div>
+        <br>
     {% endfor %}
+
     <br><br>
-    <!-- Button to create a new status -->
-    <a href="{% url 'create_status' Profile.id %}" class="create-status-btn">Create Status</a>
-    <br><br><br>
     <!-- Back button to return to the list of profiles -->
     <a href="{% url 'show_all_profiles' %}" class="back-btn">← Back to Profiles</a>
 </div>
 {% endblock %}
-
-          

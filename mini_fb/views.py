@@ -2,9 +2,9 @@
 # Author: A'Yanna Rouse (yanni620@bu.edu), 02/20/2025
 # Description: These are for the views for the mini_fb app, to show the profiles.
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
-from .forms import CreateProfileForm, CreateStatusMessageForm
-from .models import Profile, Image, StatusImage
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .forms import CreateProfileForm, CreateStatusMessageForm, UpdateProfileForm
+from .models import Profile, StatusMessage, Image, StatusImage
 from django.urls import reverse
 
 # Create your views here.
@@ -97,3 +97,38 @@ class CreateStatusMessageView(CreateView):
         pk = self.kwargs['pk']
         # call reverse to generate the URL for this article
         return reverse('show_profile', kwargs={'pk': pk})
+    
+class UpdateProfileView(UpdateView):
+    ''' View class to handle update of a profile based on its PK.'''
+
+    model = Profile
+    form_class = UpdateProfileForm
+    template_name = "mini_fb/update_profile_form.html"
+
+class DeleteStatusMessageView(DeleteView):
+    ''' Define a view class to delete status messages. '''
+
+    # Defines the model, template, and context object name for the singular profile page
+    model = StatusMessage
+    template_name = "mini_fb/delete_status_form.html"
+    context_object_name = "message"
+
+    def get_success_url(self):
+        ''' Provide a URL to redirect to after creating a new comment.'''
+
+        profile_pk = self.object.profile.pk
+        return reverse('show_profile', kwargs={'pk': profile_pk})
+    
+class UpdateStatusMessageView(UpdateView):
+    ''' View class to handle update of a status message based on its PK. '''
+
+    model = StatusMessage
+    template_name = "mini_fb/update_status_form.html"
+    context_object_name = "status_message"
+    fields = ['message']
+
+    def get_success_url(self):
+        ''' Provide a URL to redirect to after creating a new comment.'''
+
+        profile_pk = self.object.profile.pk
+        return reverse('show_profile', kwargs={'pk': profile_pk})
