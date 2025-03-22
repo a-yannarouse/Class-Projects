@@ -28,6 +28,47 @@ class Profile(models.Model):
         ''' Return all status messages for this profile.'''
         return StatusMessage.objects.filter(profile=self).order_by('timestamp')
     
+    def get_friends(self):
+        ''' Return a list of friends for this profile.'''
+        friends = []
+
+        for friend in Friend.objects.filter(profile1=self):
+            friends.append(friend.profile2)
+
+        for friend in Friend.objects.filter(profile2=self):
+            friends.append(friend.profile1)
+
+        return friends
+    
+    def add_friend(self, other):
+        ''' Add a friend relationship between this profile and another.'''
+        Friend.objects.create(profile1=self, profile2=other)
+
+    def get_friend_suggestions(self):
+        ''' Return a list of friend suggestions for this profile.'''
+        
+        # Get all profiles except the current one
+        all_profiles = Profile.objects.exclude(pk=self.pk)
+        
+        # Get current friends
+        current_friends = self.get_friends()
+        
+        # Exclude current friends from the suggestions
+        suggestions = all_profiles.exclude(pk__in=[friend.pk for friend in current_friends])
+        
+        return suggestions
+    
+    def get_news_feed(self):
+        ''' Return a list of status messages from friends.'''
+        
+        # Get friends
+        friends = self.get_friends()
+        
+        # Get status messages from friends
+        news_feed = StatusMessage.objects.filter(profile__in=friends).order_by('-timestamp')
+        
+        return news_feed
+    
 class StatusMessage(models.Model):
     ''' Encapsulate the data of a status message.'''
 
@@ -84,3 +125,15 @@ class StatusImage(models.Model):
     def __str__(self):
         ''' Return a string representation of this model instance.'''
         return f'Image {self.image_file.id} associated with StatusMessage {self.status_message.id}'
+    
+class Friend(models.Model):
+    ''' Encapsulate the data of a friend relationship.'''
+
+    # Define the data attributes of the Friend object
+    profile1 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile1')
+    profile2 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile2')
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        ''' Return a string representation of this model instance.'''
+        return f'{self.profile1} is friends with {self.profile2}'  

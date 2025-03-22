@@ -14,7 +14,6 @@ class Article(models.Model):
     # image_url = models.URLField(blank=True) # url as a string
     image_file = models.ImageField(blank=True) # file upload
     
-
     def __str__(self):
         ''' Return a string representation of this model instance.'''
         return f'{self.title} by {self.author}'

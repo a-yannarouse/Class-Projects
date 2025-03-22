@@ -1,0 +1,63 @@
+<!-- mini_fb/news_feed.html -->
+<!-- File: news_feed.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 03/21/2025
+    Description: This is the template for showing each profile's news feed in the mini Facebook application.
+-->
+
+{% extends 'mini_fb/base.html' %}
+
+{% block content %}
+
+<!-- Display the news feed -->
+<h1> News Feed </h1>
+
+<!-- Display all posts in a table -->
+<div class="container table-container">
+    <div style="text-align: center;">
+        <a href="{% url 'show_profile' Profile.id %}" class="back-btn" style="margin-right: 20px;">
+            Back to {{ Profile.first_name }}'s Page
+        </a>
+        <a href="{% url 'show_all_profiles' %}" class="back-btn" style="margin-left: 20px;"> All Profiles </a>
+        <br><br>
+        <h2>Latest Updates from Friends:</h2>
+        <br><br>
+    </div>
+
+    <div class="news-feed">
+        <!-- Display all posts in the news feed -->
+        {% if Profile.get_news_feed %}
+            {% for post in Profile.get_news_feed %}
+                <div class="news-entry">
+                    <div class="profile-header">
+                        <a href="{% url 'show_profile' post.profile.id %}">
+                            <img class="profile-img" src="{{ post.profile.image_url }}">
+                        </a>
+                        <div style="text-align: center;">
+                            <h2>{{ post.profile.first_name }} {{ post.profile.last_name }}</h2>
+                            <span class="timestamp" style="font-size: 0.8em; color: gray;">{{ post.timestamp }}</span>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <br>
+                        <h2 style = "color: #3a4d4b">{{ post.message }}</h2>
+                        {% if post.get_images %}
+                            <div class="image-gallery">
+                                {% for img in post.get_images %}
+                                    <img src="{{ img.image_file.url }}" >
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+
+        <!-- Display message if there are no posts to show -->
+
+        {% else %}
+            <p>No posts to display in the news feed.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

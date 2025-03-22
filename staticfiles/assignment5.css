@@ -244,6 +244,7 @@ footer {
     cursor: pointer;
 }
 
+
 /* Responsive Adjustments */
 @media screen and (max-width: 760px) {
     .profile-table thead th {

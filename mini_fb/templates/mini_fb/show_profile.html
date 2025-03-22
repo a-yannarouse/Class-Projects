@@ -24,16 +24,21 @@
     <!-- Button to create a new status -->
     <a href="{% url 'create_status' Profile.id %}" class="create-status-btn">Create Status</a>
 
+    <!-- Button to go to news feed -->
+    <br><br>
+    <a href="{% url 'news_feed' Profile.id %}" class="create-status-btn">News Feed</a>
+
     <br><br>
     <!-- Display the Profile's Status and image -->
-    <h3>Status:</h3>
+    <h3>Status Messages:</h3>
     {% for message in Profile.get_status_messages %}
         <div class="status-entry">
-            <p> {{ message.timestamp }} - {{ message }} </p>
+            <h3> {{ message }} </h3>
             {% for img in message.get_images %}
                 <img src='{{img.image_file.url}}' alt='{{img.image_file.url}}'>
-                <br><br>
+                <br>
             {% endfor %}
+            <p> {{ message.timestamp }} </p>
             <div class="status-buttons">
                 <!-- Button to update status -->
                 <a href="{% url 'update_status' message.pk %}" class="create-status-btn">Update</a>
@@ -43,6 +48,26 @@
         </div>
         <br>
     {% endfor %}
+    <br>
+    <!-- Display the Profile's Friends -->
+    <h3> {{Profile.first_name}}'s Friends </h3>
+    <br>
+    <div class="friend-gallery">
+        {% for friend in Profile.get_friends %}
+            <div class="friend-container">
+                <a href="{% url 'show_profile' friend.pk %}">
+                    <img src="{{ friend.image_url }}" class="profile-img">
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <br>
+    <br>
+
+    <!-- Button to view friend suggestions -->
+    <a href="{% url 'friend_suggestions' Profile.id %}" class="create-status-btn">Friend Suggestions</a>
+    <br>
+    <br>
 
     <br><br>
     <!-- Back button to return to the list of profiles -->

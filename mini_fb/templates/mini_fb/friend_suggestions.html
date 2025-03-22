@@ -1,0 +1,38 @@
+<!-- mini_fb/friends_suggestions.html -->
+<!-- File: friends_suggestions.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 03/20/2025
+    Description: This is the template for showing each profile's friend suggestions in the mini Facebook application.
+-->
+
+{% extends 'mini_fb/base.html' %}
+
+{% block content %}
+<!-- Display the friend suggestions -->
+<h1> Friend Suggestions </h1>
+
+<!-- Display all friend suggestions in a table -->
+<div class="container table-container">
+    <div style="text-align: center;">
+        <a href="{% url 'show_profile' Profile.id %}" class="back-btn" style="margin-right: 20px;"> Back to {{ Profile.first_name }}'s Page </a>
+        <a href="{% url 'show_all_profiles' %}" class="back-btn" style="margin-left: 20px;"> All Profiles </a> 
+        <br><br>
+        <h3>People {{ Profile.first_name }} May Know:</h3>
+    </div>
+
+    <div class="image-gallery">
+        {% for suggestion in Profile.get_friend_suggestions %}
+            <div class="profile-container">
+                <a href="{% url 'show_profile' suggestion.pk %}">
+                    <img class="profile-img" src="{{ suggestion.image_url }}" alt="{{ suggestion.first_name }}'s Profile Picture">
+                    <div class="suggestion-name">
+                        {{ suggestion.first_name }} {{ suggestion.last_name }}
+                    </div>
+                </a>
+                <a href="{% url 'add_friend' Profile.pk suggestion.pk %}" class="submit-btn">Add Friend</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+

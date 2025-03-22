@@ -1,11 +1,12 @@
 # File: views.py
 # Author: A'Yanna Rouse (yanni620@bu.edu), 02/20/2025
 # Description: These are for the views for the mini_fb app, to show the profiles.
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render # type: ignore
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View # type: ignore
 from .forms import CreateProfileForm, CreateStatusMessageForm, UpdateProfileForm
 from .models import Profile, StatusMessage, Image, StatusImage
-from django.urls import reverse
+from django.urls import reverse # type: ignore
+from django.shortcuts import redirect # type: ignore
 
 # Create your views here.
 class ShowAllProfilesView(ListView):
@@ -132,3 +133,39 @@ class UpdateStatusMessageView(UpdateView):
 
         profile_pk = self.object.profile.pk
         return reverse('show_profile', kwargs={'pk': profile_pk})
+
+class AddFriendView(View):
+    ''' View class to handle adding a friend to a profile. '''
+
+    def dispatch(self, request, *args, **kwargs):
+        ''' Handle the request to add a friend. '''
+
+        # retrieve the PKs from the URL pattern
+        profile_pk = self.kwargs['pk']
+        friend_pk = self.kwargs['other_pk']
+
+        # find the profile and friend objects
+        profile = Profile.objects.get(pk=profile_pk)
+        friend = Profile.objects.get(pk=friend_pk)
+
+        # add the friend to the profile
+        profile.add_friend(friend)
+
+        # redirect to the profile page
+        return redirect('show_profile', pk=profile_pk)
+    
+class ShowFriendSuggestionsView(DetailView):
+    ''' Defines a view class to show friend suggestions. '''
+
+    # Defines the model, template, and context object name for the singular profile page
+    model = Profile
+    template_name = "mini_fb/friend_suggestions.html"
+    context_object_name = "Profile"
+
+class ShowNewsFeedView(DetailView):
+    ''' Defines a view class to show news feeds. '''
+
+    # Defines the model, template, and context object name for the singular profile page
+    model = Profile
+    template_name = "mini_fb/news_feed.html"
+    context_object_name = "Profile"

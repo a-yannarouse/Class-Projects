@@ -42,7 +42,7 @@ class CreateArticleView(CreateView):
     success_url = "/blog/show_all"
     
     def form_valid(self, form):
-        ''' Override the form_valid method to add some debug information.'''
+        ''' This method handles the form and saves the new object to the Django database.'''
 
         # print the form data: 
         print(f'CreateArticleView.form_valid(): {form.cleaned_data}')
