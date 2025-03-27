@@ -28,7 +28,9 @@
                         {{ suggestion.first_name }} {{ suggestion.last_name }}
                     </div>
                 </a>
-                <a href="{% url 'add_friend' Profile.pk suggestion.pk %}" class="submit-btn">Add Friend</a>
+                {% if user.is_authenticated and user == Profile.user %}
+                <a href="{% url 'add_friend' suggestion.pk %}" class="submit-btn">Add Friend</a>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

@@ -18,15 +18,17 @@
     <h2> {{ Profile.city }} </h2>
     <p> {{ Profile.email }} </p>
 
-    <!-- Button to update the Profile -->
-    <a href="{% url 'update_profile' Profile.id %}" class="create-status-btn">Update Profile</a>
+    {% if user.is_authenticated and user == Profile.user %}
+        <!-- Button to update the Profile -->
+        <a href="{% url 'update_profile' %}" class="create-status-btn">Update Profile</a>
 
-    <!-- Button to create a new status -->
-    <a href="{% url 'create_status' Profile.id %}" class="create-status-btn">Create Status</a>
+        <!-- Button to create a new status -->
+        <a href="{% url 'create_status' %}" class="create-status-btn">Create Status</a>
 
-    <!-- Button to go to news feed -->
-    <br><br>
-    <a href="{% url 'news_feed' Profile.id %}" class="create-status-btn">News Feed</a>
+        <!-- Button to go to news feed -->
+        <br><br>
+        <a href="{% url 'news_feed' %}" class="create-status-btn">News Feed</a>
+    {% endif %}
 
     <br><br>
     <!-- Display the Profile's Status and image -->
@@ -41,9 +43,11 @@
             <p> {{ message.timestamp }} </p>
             <div class="status-buttons">
                 <!-- Button to update status -->
+                {% if user.is_authenticated and user == Profile.user %}
                 <a href="{% url 'update_status' message.pk %}" class="create-status-btn">Update</a>
                 <!-- Button to delete status -->
                 <a href="{% url 'delete_status' message.pk %}" class="create-status-btn">Delete?</a>
+                {% endif %}
             </div>
         </div>
         <br>
@@ -55,7 +59,9 @@
     <div class="friend-gallery">
         {% for friend in Profile.get_friends %}
             <div class="friend-container">
+                {% if user.is_authenticated and user == Profile.user %}
                 <a href="{% url 'show_profile' friend.pk %}">
+                {% endif %}
                     <img src="{{ friend.image_url }}" class="profile-img">
                 </a>
             </div>
@@ -65,12 +71,10 @@
     <br>
 
     <!-- Button to view friend suggestions -->
-    <a href="{% url 'friend_suggestions' Profile.id %}" class="create-status-btn">Friend Suggestions</a>
+    {% if user.is_authenticated and user == Profile.user %}
+        <a href="{% url 'friend_suggestions' %}" class="create-status-btn">Friend Suggestions</a>
+    {% endif %}
     <br>
     <br>
-
-    <br><br>
-    <!-- Back button to return to the list of profiles -->
-    <a href="{% url 'show_all_profiles' %}" class="back-btn">← Back to Profiles</a>
 </div>
 {% endblock %}

@@ -10,6 +10,35 @@
     <head> 
         <title> Facebook </title>
         <link rel="stylesheet" type="text/css" href="{% static 'assignment5.css' %}">
+        <nav class="navbar">
+            <ul class="nav-list">
+                <li><a href="{% url 'show_all_profiles' %}">Home</a></li>
+                <li><a href="{% url 'create_profile' %}" class="create-profile-btn">Create New Profile</a></li>  
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'show_profile' logged_in_profile.pk %}">Profile Page</a></li>
+                {% endif %}
+
+                {% if request.user.is_authenticated %}
+                <li>
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <input type="submit" value="Logout" class="logout-btn">
+                    </form>
+                </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        
+            <div class="user-info">
+                {% if request.user.is_authenticated %}
+                    Logged in as: <strong>{{ request.user }}</strong>
+                {% else %}
+                    Not logged in.
+                {% endif %}
+            </div>
+            <hr>
+        </nav>        
     </head>
 
     <body>

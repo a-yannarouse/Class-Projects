@@ -12,10 +12,30 @@
             <h1> Our Blog </h1>
             <nav> 
                 <ul> 
+                    <!-- URLs for users who are not logged in -->
                     <li><a href="{% url 'random' %}"> Random </a></li><br>
                     <li><a href="{% url 'show_all' %}"> Show all </a></li><br>
-                    <li><a href="{% url 'create_article' %}"> Create </a></li>
+                    <!-- URLs for logged in users only -->
+                    {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'create_article' %}"> Create </a></li><br>
+                    <!-- Add: URLs for authentication -->
+                    <li>
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <input type="submit" value="Logout">
+                        </form>
+                    </li>
+                    {% else %}
+                    <!-- URLs for users who are not logged in -->
+                    <li><a href="{% url 'login' %}"> Login </a></li>
+                    {% endif %}
                 </ul>
+                <hr> 
+                {% if request.user.is_authenticated %}
+                Logged in as: {{ request.user }}
+                {% else %}
+                Not logged in.
+                {% endif %}
             </nav>
         </head>
 

@@ -1,0 +1,26 @@
+<!-- mini_fb/register.html -->
+<!-- File: register.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 03/27/2025
+    Description: This is the template to register a user.
+-->
+<!-- mini_fb/register.html -->
+{% extends 'mini_fb/base.html' %}
+
+{% block content %}
+<h1>Register for an account</h1>
+
+<div class="register-container">
+    <form action="{% url 'register' %}" method="POST" class="register-form">
+        {% csrf_token %}
+        {{ form }}
+        <br>
+        <input type="submit" value="Register" class="register-submit">
+    </form>
+
+    <hr>
+
+    <p>Have an account?
+        <a href="{% url 'login' %}" class="login-btn">Login</a>
+    </p>
+</div>
+{% endblock %}

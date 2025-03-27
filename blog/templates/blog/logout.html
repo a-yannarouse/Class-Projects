@@ -1,0 +1,14 @@
+<!-- blog/login.html -->
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<h1> Login to our Blog </h1>
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+    <input type="hidden" name="next" value="{% url 'show_all' %}">
+</form>
+
+{% endblock %}
+  

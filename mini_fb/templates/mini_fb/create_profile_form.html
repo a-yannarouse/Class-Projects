@@ -10,6 +10,7 @@
 
 <!-- Display the profile image, name, city, email, URL, and buttons to either return to the profiles or create a new profile. -->
 
+{% if request.user.is_authenticated %}
 <div class="profile-container">
     <h1>Create Your Profile</h1>
     <form method="post" action="{% url 'create_profile' %}">
@@ -50,5 +51,8 @@
         </table>
     </form>
 </div>
+{% else %}
+<meta http-equiv="refresh" content="0; url={% url 'register' %}">
+{% endif %}
 
 {% endblock %}

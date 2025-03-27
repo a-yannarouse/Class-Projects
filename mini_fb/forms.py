@@ -1,7 +1,7 @@
 # File: forms.py
 # Author: A'Yanna Rouse (yanni620@bu.edu), 02/25/2025
 # Description: This file contains the model for the Profile form object.
-from django import forms
+from django import forms # type: ignore
 from .models import Profile, StatusMessage
 
 class CreateProfileForm(forms.ModelForm):

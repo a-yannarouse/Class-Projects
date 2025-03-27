@@ -1,9 +1,10 @@
 # File: models.py
 # Author: A'Yanna Rouse (yanni620@bu.edu), 02/20/2025
 # Description: This file contains the model for the Profile object.
-from django.db import models
-from django import forms
-from django.urls import reverse
+from django.db import models # type: ignore
+from django import forms # type: ignore
+from django.urls import reverse # type: ignore
+from django.contrib.auth.models import User # type: ignore
 
 # Create your models here.
 class Profile(models.Model):
@@ -15,6 +16,7 @@ class Profile(models.Model):
     city = models.TextField(blank=True)
     email = models.EmailField()
     image_url = models.URLField(blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         ''' Return a string representation of this model instance.'''

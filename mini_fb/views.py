@@ -1,15 +1,23 @@
 # File: views.py
 # Author: A'Yanna Rouse (yanni620@bu.edu), 02/20/2025
 # Description: These are for the views for the mini_fb app, to show the profiles.
-from django.shortcuts import render # type: ignore
+from django.shortcuts import get_object_or_404, redirect # type: ignore
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View # type: ignore
 from .forms import CreateProfileForm, CreateStatusMessageForm, UpdateProfileForm
 from .models import Profile, StatusMessage, Image, StatusImage
 from django.urls import reverse # type: ignore
 from django.shortcuts import redirect # type: ignore
+from django.contrib.auth.mixins import LoginRequiredMixin # for authorization # type: ignore
+from django.contrib.auth.forms import UserCreationForm # the Django user model # type: ignore
+from django.contrib.auth.models import User # the Django user model # type: ignore
+from django.contrib.auth import login # type: ignore
+from django.views.generic.base import ContextMixin # type: ignore
+from .mixins import LoggedInUserProfileMixin # type: ignore
 
 # Create your views here.
-class ShowAllProfilesView(ListView):
+    
+# Public Views (no login required)
+class ShowAllProfilesView(LoggedInUserProfileMixin, ListView):
     ''' Define a view class to show all profiles. '''
 
     # Defines the model, template, and context object name for the all profiles page
@@ -17,7 +25,17 @@ class ShowAllProfilesView(ListView):
     template_name = "mini_fb/show_all_profiles.html"
     context_object_name = "Profiles"
 
-class ShowProfilePageView(DetailView):
+    def dispatch(self, request, *args, **kwargs):
+        '''Override the dispatch method to add debugging information.'''
+
+        if request.user.is_authenticated:
+            print(f'ShowAllProfilesView.dispatch(): request.user={request.user}')
+        else:
+            print(f'ShowAllProfilesView.dispatch(): not logged in.')
+
+        return super().dispatch(request, *args, **kwargs)
+
+class ShowProfilePageView(LoggedInUserProfileMixin, DetailView):
     ''' Define a view class to show all profiles. '''
 
     # Defines the model, template, and context object name for the singular profile page
@@ -25,7 +43,7 @@ class ShowProfilePageView(DetailView):
     template_name = "mini_fb/show_profile.html"
     context_object_name = "Profile"
 
-class CreateProfileView(CreateView):
+class CreateProfileView(LoggedInUserProfileMixin, CreateView):
     ''' A view to handle creation of a new Profile.
         (1) display the HTML form to user (GET)
         (2) process the form submission and store the new profile object (POST)
@@ -34,16 +52,28 @@ class CreateProfileView(CreateView):
     form_class = CreateProfileForm
     template_name = "mini_fb/create_profile_form.html"
     
+    def dispatch(self, request, *args, **kwargs):
+        # If the user is not authenticated, redirect to the registration page.
+        if not request.user.is_authenticated:
+            return redirect('register')
+        return super().dispatch(request, *args, **kwargs)
+    
     def form_valid(self, form):
-        ''' Save the form data to the database.'''
-        form.save()
+        ''' Save the form data to the database with the proper user.'''
+        # Attach the currently logged-in user to the profile
+        form.instance.user = self.request.user
         return super().form_valid(form)
     
-class CreateStatusMessageView(CreateView):
+# Protected Views (login required)
+class CreateStatusMessageView(LoginRequiredMixin, LoggedInUserProfileMixin, CreateView):
     ''' A view to handle creation of a new status message on a Profile.'''
 
     form_class = CreateStatusMessageForm
     template_name = "mini_fb/create_status_form.html"
+
+    def get_login_url(self) -> str:
+        '''return the URL required for login'''
+        return reverse('login')
     
     def get_context_data(self, **kwargs):
         ''' Return the dictionary of context variables for use in the template.'''
@@ -51,10 +81,8 @@ class CreateStatusMessageView(CreateView):
         # calling the superclass method
         context = super().get_context_data(**kwargs)
 
-        # find/all the article to the context data
-        # retrieve the PK from the URL pattern
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
+        # find the profile for the logged-in user
+        profile = get_object_or_404(Profile, user=self.request.user)
 
         # add this article into the context dictionary
         context['Profile'] = profile
@@ -66,11 +94,9 @@ class CreateStatusMessageView(CreateView):
         it to the database. 
         '''
 
-        # instrument our code to display form fields: 
-        print(f"CreateCommentView.form_valid: form.cleaned_data={form.cleaned_data}")
+        # find the profile for the logged-in user
+        profile = get_object_or_404(Profile, user=self.request.user)
 
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
         # attach the article to the comment
         form.instance.profile = profile # set the FK
 
@@ -94,19 +120,26 @@ class CreateStatusMessageView(CreateView):
     def get_success_url(self):
         ''' Provide a URL to redirect to after creating a new comment.'''
 
-        # retrieve the PK from the URL pattern
-        pk = self.kwargs['pk']
         # call reverse to generate the URL for this article
-        return reverse('show_profile', kwargs={'pk': pk})
+        profile = get_object_or_404(Profile, user=self.request.user)
+        return reverse('show_profile', kwargs={'pk': profile.pk})
     
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(LoginRequiredMixin, LoggedInUserProfileMixin, UpdateView):
     ''' View class to handle update of a profile based on its PK.'''
 
     model = Profile
     form_class = UpdateProfileForm
     template_name = "mini_fb/update_profile_form.html"
 
-class DeleteStatusMessageView(DeleteView):
+    def get_object(self):
+        ''' Fetch the Profile object for the logged-in user. '''
+        return get_object_or_404(Profile, user=self.request.user)
+    
+    def get_login_url(self) -> str:
+        '''return the URL required for login'''
+        return reverse('login')
+
+class DeleteStatusMessageView(LoginRequiredMixin, LoggedInUserProfileMixin, DeleteView):
     ''' Define a view class to delete status messages. '''
 
     # Defines the model, template, and context object name for the singular profile page
@@ -114,13 +147,25 @@ class DeleteStatusMessageView(DeleteView):
     template_name = "mini_fb/delete_status_form.html"
     context_object_name = "message"
 
+    def get_login_url(self) -> str:
+        '''return the URL required for login'''
+        return reverse('login')
+    
+    def dispatch(self, request, *args, **kwargs):
+        ''' Ensure the logged-in user is the owner of the profile associated with the status message. '''
+        status_message = self.get_object()
+        if request.user != status_message.profile.user:
+            return redirect('show_profile', pk=status_message.profile.pk)
+
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_success_url(self):
         ''' Provide a URL to redirect to after creating a new comment.'''
 
         profile_pk = self.object.profile.pk
         return reverse('show_profile', kwargs={'pk': profile_pk})
     
-class UpdateStatusMessageView(UpdateView):
+class UpdateStatusMessageView(LoginRequiredMixin, LoggedInUserProfileMixin, UpdateView):
     ''' View class to handle update of a status message based on its PK. '''
 
     model = StatusMessage
@@ -128,44 +173,87 @@ class UpdateStatusMessageView(UpdateView):
     context_object_name = "status_message"
     fields = ['message']
 
+    def get_login_url(self) -> str:
+        '''return the URL required for login'''
+        return reverse('login')
+    
+    def dispatch(self, request, *args, **kwargs):
+        ''' Ensure the logged-in user is the owner of the profile associated with the status message. '''
+        status_message = self.get_object()
+        if request.user != status_message.profile.user:
+            return redirect('show_profile', pk=status_message.profile.pk)
+
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_success_url(self):
         ''' Provide a URL to redirect to after creating a new comment.'''
 
         profile_pk = self.object.profile.pk
         return reverse('show_profile', kwargs={'pk': profile_pk})
 
-class AddFriendView(View):
+class AddFriendView(LoginRequiredMixin, LoggedInUserProfileMixin, View):
     ''' View class to handle adding a friend to a profile. '''
 
+    def get_login_url(self) -> str:
+        '''return the URL required for login'''
+        return reverse('login')
+    
     def dispatch(self, request, *args, **kwargs):
         ''' Handle the request to add a friend. '''
 
         # retrieve the PKs from the URL pattern
-        profile_pk = self.kwargs['pk']
         friend_pk = self.kwargs['other_pk']
 
-        # find the profile and friend objects
-        profile = Profile.objects.get(pk=profile_pk)
-        friend = Profile.objects.get(pk=friend_pk)
+        # find the logged-in user's profile and the friend's profile
+        profile = get_object_or_404(Profile, user=self.request.user)
+        friend = get_object_or_404(Profile, pk=friend_pk)
 
         # add the friend to the profile
         profile.add_friend(friend)
 
         # redirect to the profile page
-        return redirect('show_profile', pk=profile_pk)
+        return redirect('show_profile', pk=profile.pk)
     
-class ShowFriendSuggestionsView(DetailView):
+class ShowFriendSuggestionsView(LoginRequiredMixin, LoggedInUserProfileMixin, DetailView):
     ''' Defines a view class to show friend suggestions. '''
 
     # Defines the model, template, and context object name for the singular profile page
+    login_url = '/mini_fb/login/'
     model = Profile
     template_name = "mini_fb/friend_suggestions.html"
     context_object_name = "Profile"
 
-class ShowNewsFeedView(DetailView):
+    def get_object(self):
+        ''' Fetch the Profile object for the logged-in user. '''
+        return get_object_or_404(Profile, user=self.request.user)
+
+class ShowNewsFeedView(LoginRequiredMixin, LoggedInUserProfileMixin, DetailView):
     ''' Defines a view class to show news feeds. '''
 
     # Defines the model, template, and context object name for the singular profile page
+    login_url = '/mini_fb/login/'
     model = Profile
     template_name = "mini_fb/news_feed.html"
     context_object_name = "Profile"
+
+    def get_object(self):
+        ''' Fetch the Profile object for the logged-in user. '''
+        return get_object_or_404(Profile, user=self.request.user)
+    
+class UserRegistrationView(CreateView):
+    ''' A view to handle registration of a new user.'''
+    template_name = 'mini_fb/register.html'
+    form_class = UserCreationForm
+    model = User
+
+    def form_valid(self, form):
+        # Save the new user
+        response = super().form_valid(form)
+        # Log the user in automatically
+        login(self.request, self.object)
+        return response
+    
+    def get_success_url(self):
+        ''' Provide a URL to redirect to create profile after creating a new account.'''
+        return reverse('create_profile')
+    

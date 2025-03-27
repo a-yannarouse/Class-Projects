@@ -1,0 +1,19 @@
+<!-- mini_fb/logged_out.html -->
+<!-- File: logged_out.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 03/27/2025
+    Description: This is the template for the user to logged out of the web application.
+-->
+{% extends 'mini_fb/base.html' %}
+
+{% block content %}
+
+<br>
+<h1>You have been logged out</h1>
+<br>
+<div style="text-align: center;">
+    <p><a href="{% url 'login' %}">Click here to log in again</a></p>
+</div>
+<br><br>
+
+{% endblock %}
+
