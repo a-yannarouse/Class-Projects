@@ -10,6 +10,7 @@
 
 <!-- Display the profile image, name, city, email, URL, and buttons to either return to the profiles or create a new profile. -->
 
+<!-- If user is logged in, show the form -->
 {% if request.user.is_authenticated %}
 <div class="profile-container">
     <h1>Create Your Profile</h1>
@@ -51,6 +52,7 @@
         </table>
     </form>
 </div>
+<!-- If user is not logged in, redirect to the register page -->
 {% else %}
 <meta http-equiv="refresh" content="0; url={% url 'register' %}">
 {% endif %}

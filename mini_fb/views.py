@@ -12,9 +12,21 @@ from django.contrib.auth.forms import UserCreationForm # the Django user model #
 from django.contrib.auth.models import User # the Django user model # type: ignore
 from django.contrib.auth import login # type: ignore
 from django.views.generic.base import ContextMixin # type: ignore
-from .mixins import LoggedInUserProfileMixin # type: ignore
 
 # Create your views here.
+
+class LoggedInUserProfileMixin(ContextMixin):
+    """
+    A mixin to add the logged-in user's profile to the context.
+    """
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            # Get the logged-in user's profile
+            context['logged_in_profile'] = get_object_or_404(Profile, user=self.request.user)
+        else:
+            context['logged_in_profile'] = None
+        return context
     
 # Public Views (no login required)
 class ShowAllProfilesView(LoggedInUserProfileMixin, ListView):
