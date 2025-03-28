@@ -14,7 +14,7 @@
 <!-- Display all posts in a table -->
 <div class="container table-container">
     <div style="text-align: center;">
-        <a href="{% url 'show_profile' Profile.id %}" class="back-btn" style="margin-right: 20px;">
+        <a href="{% url 'show_profile' %}" class="back-btn" style="margin-right: 20px;">
             Back to {{ Profile.first_name }}'s Page
         </a>
         <a href="{% url 'show_all_profiles' %}" class="back-btn" style="margin-left: 20px;"> All Profiles </a>
@@ -29,7 +29,7 @@
             {% for post in Profile.get_news_feed %}
                 <div class="news-entry">
                     <div class="profile-header">
-                        <a href="{% url 'show_profile' post.profile.pk %}">
+                        <a href="{% url 'show_other_profile' post.profile.pk %}">
                             <img class="profile-img" src="{{ post.profile.image_url }}">
                         </a>
                         <div style="text-align: center;">

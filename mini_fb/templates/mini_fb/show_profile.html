@@ -28,6 +28,10 @@
         <!-- Button to go to news feed -->
         <br><br>
         <a href="{% url 'news_feed' %}" class="create-status-btn">News Feed</a>
+    
+    {% elif user.is_authenticated and user != Profile.user %}
+        <!-- Button to add the other profile as a friend -->
+        <a href="{% url 'add_friend' Profile.pk %}" class="create-status-btn">Add Friend</a>
     {% endif %}
 
     <br><br>
@@ -60,7 +64,7 @@
         {% for friend in Profile.get_friends %}
             <div class="friend-container">
                 {% if user.is_authenticated and user == Profile.user %}
-                <a href="{% url 'show_profile' friend.pk %}">
+                <a href="{% url 'show_other_profile' friend.pk %}">
                 {% endif %}
                     <img src="{{ friend.image_url }}" class="profile-img">
                 </a>

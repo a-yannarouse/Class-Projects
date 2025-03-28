@@ -27,14 +27,14 @@
             <tr>
                 <!-- Profile Image -->
                 <td>
-                    <a href="{% url 'show_profile' profile.pk %}">
+                    <a href="{% url 'show_other_profile' profile.pk %}">
                         <img src="{{ profile.image_url }}" class="profile-img">
                     </a>
                 </td>
                 
                 <!-- Name -->
                 <td>
-                    <a href="{% url 'show_profile' profile.pk %}">
+                    <a href="{% url 'show_other_profile' profile.pk %}">
                         {{ profile.first_name }} {{ profile.last_name }}
                     </a>
                 </td>
@@ -44,7 +44,7 @@
 
                 <!-- Profile Link -->
                 <td>
-                    <a href="{% url 'show_profile' profile.pk %}" class="view-profile-btn">View Profile</a>
+                    <a href="{% url 'show_other_profile' profile.pk %}" class="view-profile-btn">View Profile</a>
                 </td>
             </tr>
             {% endfor %}

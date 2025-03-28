@@ -17,7 +17,7 @@
                 <li><a href="{% url 'create_profile' %}" class="create-profile-btn">Create New Profile</a></li>  
                 <!-- URLs for logged in users only -->
                 {% if request.user.is_authenticated %}
-                    <li><a href="{% url 'show_profile' logged_in_profile.pk %}">Profile Page</a></li>
+                    <li><a href="{% url 'show_profile' %}">Profile Page</a></li>
                 {% endif %}
 
                 {% if request.user.is_authenticated %}

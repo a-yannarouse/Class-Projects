@@ -55,6 +55,13 @@ class ShowProfilePageView(LoggedInUserProfileMixin, DetailView):
     template_name = "mini_fb/show_profile.html"
     context_object_name = "Profile"
 
+    def get_object(self):
+        ''' Fetch the Profile object dynamically. '''
+        pk = self.kwargs.get('pk')  # Get `pk` from the URL if it exists
+        if pk:
+            return get_object_or_404(Profile, pk=pk)
+        return get_object_or_404(Profile, user=self.request.user)
+
 class CreateProfileView(LoggedInUserProfileMixin, CreateView):
     ''' A view to handle creation of a new Profile.
         (1) display the HTML form to user (GET)
@@ -133,8 +140,7 @@ class CreateStatusMessageView(LoginRequiredMixin, LoggedInUserProfileMixin, Crea
         ''' Provide a URL to redirect to after creating a new comment.'''
 
         # call reverse to generate the URL for this article
-        profile = get_object_or_404(Profile, user=self.request.user)
-        return reverse('show_profile', kwargs={'pk': profile.pk})
+        return reverse('show_profile')
     
 class UpdateProfileView(LoginRequiredMixin, LoggedInUserProfileMixin, UpdateView):
     ''' View class to handle update of a profile based on its PK.'''
@@ -167,15 +173,13 @@ class DeleteStatusMessageView(LoginRequiredMixin, LoggedInUserProfileMixin, Dele
         ''' Ensure the logged-in user is the owner of the profile associated with the status message. '''
         status_message = self.get_object()
         if request.user != status_message.profile.user:
-            return redirect('show_profile', pk=status_message.profile.pk)
+            return redirect(f"{reverse('show_profile')}?pk={status_message.profile.pk}")
 
         return super().dispatch(request, *args, **kwargs)
     
     def get_success_url(self):
         ''' Provide a URL to redirect to after creating a new comment.'''
-
-        profile_pk = self.object.profile.pk
-        return reverse('show_profile', kwargs={'pk': profile_pk})
+        return reverse('show_profile')
     
 class UpdateStatusMessageView(LoginRequiredMixin, LoggedInUserProfileMixin, UpdateView):
     ''' View class to handle update of a status message based on its PK. '''
@@ -200,8 +204,7 @@ class UpdateStatusMessageView(LoginRequiredMixin, LoggedInUserProfileMixin, Upda
     def get_success_url(self):
         ''' Provide a URL to redirect to after creating a new comment.'''
 
-        profile_pk = self.object.profile.pk
-        return reverse('show_profile', kwargs={'pk': profile_pk})
+        return reverse('show_profile')
 
 class AddFriendView(LoginRequiredMixin, LoggedInUserProfileMixin, View):
     ''' View class to handle adding a friend to a profile. '''
@@ -224,7 +227,7 @@ class AddFriendView(LoginRequiredMixin, LoggedInUserProfileMixin, View):
         profile.add_friend(friend)
 
         # redirect to the profile page
-        return redirect('show_profile', pk=profile.pk)
+        return redirect(f"{reverse('show_profile')}?pk={friend_pk}")
     
 class ShowFriendSuggestionsView(LoginRequiredMixin, LoggedInUserProfileMixin, DetailView):
     ''' Defines a view class to show friend suggestions. '''

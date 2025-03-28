@@ -3,6 +3,7 @@
 # Description: Urls for each template page of the web app
 from django.urls import path # type: ignore
 from .views import *
+from . import views
 # generic view for authentication/authorization
 from django.contrib.auth import views as auth_views # type: ignore
 
@@ -10,7 +11,8 @@ urlpatterns = [
     # URL pattern for the all_profiles page.
     path('', ShowAllProfilesView.as_view(), name="show_all_profiles"),
     # URL pattern for each singular profile page.
-    path('Profile/<int:pk>', ShowProfilePageView.as_view(), name='show_profile'),
+    path('Profile', ShowProfilePageView.as_view(), name='show_profile'),
+    path('Profile/<int:pk>/', views.ShowProfilePageView.as_view(), name='show_other_profile'),  # Other profiles
     path('create_profile', CreateProfileView.as_view(), name='create_profile'),
     path('Profile/create_status', CreateStatusMessageView.as_view(), name='create_status'),
     path('Profile/update', UpdateProfileView.as_view(), name='update_profile'),

@@ -26,7 +26,7 @@
         <button type="submit" class="create-status-btn" >Delete</button>
     </form>
 
-    <form action="{% url 'show_profile' message.profile.pk %}" method="GET" style="display: inline;">
+    <form action="{% url 'show_profile' %}" method="GET" style="display: inline;">
         {% csrf_token %}
         <button type="submit" class="create-status-btn">Cancel</button>
     </form>
