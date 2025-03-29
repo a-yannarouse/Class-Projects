@@ -28,10 +28,6 @@
         <!-- Button to go to news feed -->
         <br><br>
         <a href="{% url 'news_feed' %}" class="create-status-btn">News Feed</a>
-    
-    {% elif user.is_authenticated and user != Profile.user %}
-        <!-- Button to add the other profile as a friend -->
-        <a href="{% url 'add_friend' Profile.pk %}" class="create-status-btn">Add Friend</a>
     {% endif %}
 
     <br><br>

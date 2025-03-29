@@ -451,6 +451,47 @@ footer {
     font-size: 0.9rem;
 }
 
+/* Create Profile Form Table */
+.creation-form-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 10px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+/* Table Headers (Labels) */
+.creation-form-table th {
+    text-align: right;
+    font-weight: 600;
+    padding-right: 10px;
+    color: #333;
+}
+/* Make all form inputs consistent */
+.creation-form-table input,
+.creation-form-table textarea,
+.creation-form-table select {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    resize: none;
+}
+
+/* Fix large textarea size */
+.creation-form-table textarea {
+    height: 40px;
+}
+
+/* Improve label alignment */
+.creation-form-table th {
+    vertical-align: top;
+    padding-top: 12px;
+    white-space: nowrap;
+}
 
 /* Responsive Adjustments */
 @media screen and (max-width: 760px) {

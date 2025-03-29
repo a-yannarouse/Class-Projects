@@ -4,7 +4,6 @@
 from django.urls import path # type: ignore
 from .views import *
 from . import views
-# generic view for authentication/authorization
 from django.contrib.auth import views as auth_views # type: ignore
 
 urlpatterns = [
@@ -24,5 +23,4 @@ urlpatterns = [
     #authorization-related URLs:
     path('login/', auth_views.LoginView.as_view(template_name='mini_fb/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='mini_fb/logged_out.html'), name='logout'), 
-    path('register/', UserRegistrationView.as_view(), name='register'),
 ]

@@ -71,17 +71,28 @@ class CreateProfileView(LoggedInUserProfileMixin, CreateView):
     form_class = CreateProfileForm
     template_name = "mini_fb/create_profile_form.html"
     
-    def dispatch(self, request, *args, **kwargs):
-        # If the user is not authenticated, redirect to the registration page.
-        if not request.user.is_authenticated:
-            return redirect('register')
-        return super().dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        ''' Provide context data to the template, including the UserCreationForm. '''
+        context = super().get_context_data(**kwargs)
+        context['user_creation_form'] = UserCreationForm()
+        return context
     
     def form_valid(self, form):
         ''' Save the form data to the database with the proper user.'''
-        # Attach the currently logged-in user to the profile
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+        # Reconstruct the UserCreationForm from POST data
+        user_creation_form = UserCreationForm(self.request.POST)
+        if user_creation_form.is_valid():
+            # Save the new User object
+            user = user_creation_form.save()
+            # Log the user in
+            login(self.request, user)
+            # Attach the User to the Profile instance
+            form.instance.user = user
+            # Delegate the rest to the superclass
+            return super().form_valid(form)
+        else:
+            # If the UserCreationForm is invalid, re-render the page with errors
+            return self.render_to_response(self.get_context_data(form=form, user_creation_form=user_creation_form))
     
 # Protected Views (login required)
 class CreateStatusMessageView(LoginRequiredMixin, LoggedInUserProfileMixin, CreateView):
@@ -254,21 +265,3 @@ class ShowNewsFeedView(LoginRequiredMixin, LoggedInUserProfileMixin, DetailView)
     def get_object(self):
         ''' Fetch the Profile object for the logged-in user. '''
         return get_object_or_404(Profile, user=self.request.user)
-    
-class UserRegistrationView(CreateView):
-    ''' A view to handle registration of a new user.'''
-    template_name = 'mini_fb/register.html'
-    form_class = UserCreationForm
-    model = User
-
-    def form_valid(self, form):
-        # Save the new user
-        response = super().form_valid(form)
-        # Log the user in automatically
-        login(self.request, self.object)
-        return response
-    
-    def get_success_url(self):
-        ''' Provide a URL to redirect to create profile after creating a new account.'''
-        return reverse('create_profile')
-    
