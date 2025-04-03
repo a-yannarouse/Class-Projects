@@ -1,0 +1,25 @@
+<!-- File: base.html
+    Author: A'Yanna Rouse (yanni620@bu.edu), 03/31/2025
+    Description: This is the base template for each html file I create for this application.  
+-->
+{% load static %}
+<html>
+    <head>
+        <title>Voter Analytics</title>
+        <link rel="stylesheet" href="{% static 'assignment10.css' %}">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'voters_list' %}"> Voter List </a></li>
+                    <li><a href="{% url 'graphs' %}"> Voter Graphs </a></li>
+                </ul>
+            </nav>
+        </header>
+    
+    {% block content %}
+    {% endblock %}    
+  
+    </body>
+</html>
