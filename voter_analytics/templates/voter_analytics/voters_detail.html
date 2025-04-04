@@ -8,41 +8,22 @@
 {% block content %}
 <div class="container">
     <h1> Voter: {{v.first_name}} {{v.last_name}}</h1>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Street Adress</th>
-            <th>Date of Birth</th>
-            <th>Date of Registration</th>
-            <th>Party Affiliation</th>
-            <th>Precinct</th>
-            <th>v20State</th>
-            <th>v21Town</th>
-            <th>v21Primary</th>
-            <th>v22General</th>
-            <th>v23Town</th>
-            <th>Voter Score</th>
-        </tr>
-        
-        <tr>
-            <td> {{v.first_name}} {{v.last_name}}</td>
-            <td> 
-                <a href="https://www.google.com/maps/search/?api=1&query={{ v.street_number }}+{{ v.street_name }},+{{ v.zip_code }}" target="_blank">
-                {{v.street_number}} {{v.street_name}}{% if v.apartment_number %}, Apartment {{v.apartment_number}}{% endif %}, {{v.zip_code}} 
-                </a>
-            </td>
-            <td>{{v.date_of_birth}}</td>
-            <td>{{v.date_of_registration}}</td>
-            <td>{{v.precinct}}</td>
-            <td>{{v.party_affiliation}}</td>
-            <td>{{v.v20state}}</td>
-            <td>{{v.v21town}}</td>
-            <td>{{v.v21primary}}</td>
-            <td>{{v.v22general}}</td>
-            <td>{{v.v23town}}</td>
-            <td>{{v.voter_score}}</td>
-        </tr>
-    </table>
+    <div class="voter-details">
+        <p><strong>Street Address:</strong> 
+            <a href="https://www.google.com/maps/search/?api=1&query={{ v.street_number }}+{{ v.street_name }},+Newton,+MA" target="_blank">
+                {{ v.street_number }} {{ v.street_name }}{% if v.apartment_number %}, Apartment {{ v.apartment_number }}{% endif %}, Newton, MA {{ v.zip_code }}
+            </a>
+        </p>
+        <p><strong>Date of Birth:</strong> {{ v.date_of_birth }}</p>
+        <p><strong>Date of Registration:</strong> {{ v.date_of_registration }}</p>
+        <p><strong>Party Affiliation:</strong> {{ v.party_affiliation }}</p>
+        <p><strong>Precinct:</strong> {{ v.precinct }}</p>
+        <p><strong>v20State:</strong> {{ v.v20state }}</p>
+        <p><strong>v21Town:</strong> {{ v.v21town }}</p>
+        <p><strong>v21Primary:</strong> {{ v.v21primary }}</p>
+        <p><strong>v22General:</strong> {{ v.v22general }}</p>
+        <p><strong>v23Town:</strong> {{ v.v23town }}</p>
+        <p><strong>Voter Score:</strong> {{ v.voter_score }}</p>
+    </div>
 </div>
-
 {% endblock %}

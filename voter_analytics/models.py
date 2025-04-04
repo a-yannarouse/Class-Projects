@@ -17,12 +17,12 @@ class Voter(models.Model):
     last_name = models.TextField()
     street_name = models.TextField()
     precinct = models.TextField()
-    apartment_number = models.TextField()
+    apartment_number = models.TextField(null=True, blank=True)
 
     date_of_birth = models.DateField()
     date_of_registration = models.DateField()
 
-    party_affiliation = models.CharField(max_length=3)
+    party_affiliation = models.CharField(max_length=2)
     
     street_number = models.IntegerField()
     zip_code = models.IntegerField()
@@ -49,13 +49,15 @@ class Voter(models.Model):
         f = open(filename)
         f.readline()
 
+        # List to keep track of skipped records
+        skipped_records = []
+
         for line in f:
             fields = line.split(',')
         
             try:
-                # create a new instance of Result object with this record from CSV
+                # create a new instance of Voter object with this record from CSV
                 voter = Voter(
-                            voter_id=fields[0].strip(),
                             last_name=fields[1].strip(),
                             first_name=fields[2].strip(),
                             street_number=fields[3] if fields[3].strip() else None,
@@ -64,7 +66,7 @@ class Voter(models.Model):
                             zip_code=fields[6].strip(),
                             date_of_birth=fields[7].strip(),
                             date_of_registration=fields[8].strip(),
-                            party_affiliation=fields[9].strip(),
+                            party_affiliation=fields[9].strip()[:2],
                             precinct=fields[10].strip(),
                             v20state=fields[11].strip().upper() == 'TRUE',
                             v21town=fields[12].strip().upper() == 'TRUE',
@@ -77,7 +79,14 @@ class Voter(models.Model):
                 voter.save() # commit to database
                 print(f'Created voter: {voter}')
                 
-            except:
-                print(f"Skipped: {fields}")
+            except Exception as e:
+                # Log the skipped record and the error
+                skipped_records.append((fields, str(e)))
+                print(f"Skipped: {fields} - Error: {e}")
+        
+        # Print summary of skipped records
+        print(f"\nSkipped {len(skipped_records)} records:")
+        for record, error in skipped_records:
+            print(f"Record: {record} - Error: {error}")
         
         print(f'Done. Created {len(Voter.objects.all())} voters.')

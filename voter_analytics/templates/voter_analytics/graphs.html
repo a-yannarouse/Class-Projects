@@ -8,16 +8,16 @@
 {% block content %}
 <div class="container">
     <!-- Filter form -->
-    <div class = "flex-row">
+    <div class="flex-row">
         <!-- Filter form -->
-        <div class="card">
+        <div class="card" style = "width: 50%; text-align: center;">
             <h1> Filter </h1>
             <form action="{% url 'graphs' %}" method="get">
                 <div class="form-group">
                     <!-- Party Affiliation -->
                     <label for="party_affiliation">Party Affiliation:</label>
                     <select name="party_affiliation" id="party_affiliation">
-                        <option value="">-- Select --</option>
+                        <option value="">-- Select Affiliation --</option>
                         <option value="U" {% if request.GET.party_affiliation == "U" %}selected{% endif %}>U</option>
                         <option value="D" {% if request.GET.party_affiliation == "D" %}selected{% endif %}>D</option>
                         <option value="J" {% if request.GET.party_affiliation == "J" %}selected{% endif %}>J</option>
@@ -43,7 +43,7 @@
                     <!-- Voter Score -->
                     <label for="voter_score">Voter Score:</label>
                     <select name="voter_score" id="voter_score">
-                        <option value="">-- Select --</option>
+                        <option value="">-- Select Score --</option>
                         {% for score in scores %}
                         <option value="{{ score }}" {% if request.GET.voter_score == score|stringformat:"s" %}selected{% endif %}>{{ score }}</option>
                         {% endfor %}
@@ -72,23 +72,20 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group checkbox-align">
                     <!-- Previous Election Participation -->
-                    <label>Previous Election Participation:</label>
-                    <input type="checkbox" name="v20state" id="v20state" {% if request.GET.v20state %}checked{% endif %}>
-                    <label for="v20state">v20state</label><br>
-                    <input type="checkbox" name="v21town" id="v21town" {% if request.GET.v21town %}checked{% endif %}>
-                    <label for="v21town">v21town</label><br>
-                    <input type="checkbox" name="v21primary" id="v21primary" {% if request.GET.v21primary %}checked{% endif %}>
-                    <label for="v21primary">v21primary</label><br>
-                    <input type="checkbox" name="v22general" id="v22general" {% if request.GET.v22general %}checked{% endif %}>
-                    <label for="v22general">v22general</label><br>
-                    <input type="checkbox" name="v23town" id="v23town" {% if request.GET.v23town %}checked{% endif %}>
-                    <label for="v23town">v23town</label><br>
+                    <label class="checkbox-label">Previous Election Participation:</label>
+                    <div class="checkbox-inline-group">
+                        <label><input type="checkbox" name="v20state" {% if request.GET.v20state %}checked{% endif %}> v20state</label>
+                        <label><input type="checkbox" name="v21town" {% if request.GET.v21town %}checked{% endif %}> v21town</label>
+                        <label><input type="checkbox" name="v21primary" {% if request.GET.v21primary %}checked{% endif %}> v21primary</label>
+                        <label><input type="checkbox" name="v22general" {% if request.GET.v22general %}checked{% endif %}> v22general</label>
+                        <label><input type="checkbox" name="v23town" {% if request.GET.v23town %}checked{% endif %}> v23town</label>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Filter</button>
-                <button type="reset" class="btn btn-secondary">Cancel</button>
+                <a href="{% url 'graphs' %}" class="btn btn-secondary">Reset</a>
             </form>
         </div>
     </div>
