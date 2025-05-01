@@ -1,0 +1,28 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<h1 class="text-center mb-4">Login to CTRL+ALT+Black </h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form action="{% url 'login' %}" method="POST" class="card p-4 shadow">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            {% if request.GET.next %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
+            {% else %}
+                <input type="hidden" name="next" value="{% url 'profile_list' %}">
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+
+        <hr class="my-4">
+        <p class="text-center">Don't have an account?
+            <a href="{% url 'signup' %}">Register here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+

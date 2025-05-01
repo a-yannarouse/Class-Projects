@@ -1,0 +1,65 @@
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>CTRL+ALT+Black</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'final_project.css' %}">
+
+    <!-- Bootstrap CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light text-dark">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">CTRL+ALT+Black</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'profile_list' %}">Browse Creators</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'chatbot' %}">Chatbot</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'bookmarked_profiles' %}">Bookmarked Creators</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'submit_profile' %}">Add Creator</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_profile' %}">Hi, {{ user.username }}</a></li>
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'logout' %}" class="logout-form d-inline">
+                                {% csrf_token %}
+                                <input type="submit" value="Logout" class="logout-btn">
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Bootstrap JS (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,67 @@
+{% extends 'project/base.html' %}
+{% load text_filters %}
+{% load markdown_extras %}
+
+{% block content %}
+<h2>🎮 Chat with the Discovery Bot</h2>
+<p>Ask me things like: <em>“Find a horror game dev”</em> or <em>“streamers on PC”</em></p>
+
+<form method="get" action="{% url 'chatbot' %}" class="input-group mb-4">
+    <input type="text" name="q" class="form-control" placeholder="What are you looking for?" value="{{ query }}">
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+{% if ai_response %}
+    <div class="alert alert-info">
+        <strong>Gemini Suggestion:</strong><br>
+        {{ ai_response|clean_bullets|linebreaks }}
+    </div>
+{% endif %}
+
+{% if query %}
+    <h5>Results for: "{{ query }}"</h5>
+    <div class="row">
+        {% for profile in results %}
+        <div class="col-md-4 mb-4 ">
+            <div class="card h-100 shadow-sm">
+                {% if profile.photo %}
+                    <div style="height: 220px; overflow: hidden;">
+                        <img src="{{ profile.photo.url }}" alt="{{ profile.name }}" style="width: 100%; height: 100%; object-fit: cover;" class="rounded-top">
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ profile.name }}</h5>
+                    <p><strong>Type:</strong> {{ profile.profile_type }}</p>
+                    <a href="{% url 'profile_detail' profile.pk %}" class="btn btn-primary">View Profile</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <p>No matches found. Try different keywords.</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if chat_history %}
+    <h5>Chat History</h5>
+    <form method="post" action="{% url 'clear_chat_history' %}" class="mb-3">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-danger">Clear Chat History</button>
+    </form>
+
+    <ul class="list-group mb-4">
+        {% for item in chat_history %}
+            <li class="list-group-item">
+                <div>
+                    <strong>You:</strong> {{ item.query }}<br>
+                    <strong>Bot:</strong> {{ item.response|markdownify|safe }}
+                </div>
+                <a href="{% url 'delete_chat_entry' forloop.counter0 %}" class="btn btn-sm btn-outline-danger">Clear</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No chat history available.</p>
+{% endif %}
+
+{% endblock %}

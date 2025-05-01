@@ -1,0 +1,67 @@
+
+{% extends 'project/base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container" style="max-width: 600px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title mb-4">Submit a Creator or Streamer</h3>
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="{{ form.name.id_for_label }}" class="form-label">Name</label>
+                    {{ form.name|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.profile_type.id_for_label }}" class="form-label">Profile type</label>
+                    {{ form.profile_type|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.nationality.id_for_label }}" class="form-label">Nationality</label>
+                    {{ form.nationality|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.bio.id_for_label }}" class="form-label">Bio</label>
+                    {{ form.bio|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.location.id_for_label }}" class="form-label">Location (optional) </label>
+                    {{ form.location|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.website_or_channel.id_for_label }}" class="form-label">Website or channel (optional)</label>
+                    {{ form.website_or_channel|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.reason_for_submission.id_for_label }}" class="form-label">Reason for submission</label>
+                    {{ form.reason_for_submission|add_class:"form-control" }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.photo.id_for_label }}" class="form-label">Profile photo</label>
+                    {{ form.photo|add_class:"form-control" }}
+                    <small class="form-text text-muted">Upload a photo of the creator or streamer.</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.tags.id_for_label }}" class="form-label">Tags</label>
+                    {{ form.tags|add_class:"form-control" }}
+                    <small class="form-text text-muted">Select relevant tags for the profile.</small>
+                </div>
+        
+                <button type="submit" class="btn btn-success w-100">Submit for Review</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

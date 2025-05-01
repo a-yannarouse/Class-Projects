@@ -1,0 +1,17 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<div class="text-center">
+    {% if user.is_authenticated %}
+        <h1 class="mb-4"> CTRL+ALT+Black </h1>
+        <p class="lead">Discover and celebrate Black creators and streamers shaping the gaming world.</p>
+        <a class="btn btn-primary me-2" href="{% url 'profile_list' %}">Browse Creators</a>
+        <a class="btn btn-outline-secondary" href="{% url 'submit_profile' %}">Submit a Creator</a>
+    {% else %}
+        <h1 class="mb-4">Welcome to CTRL+ALT+Black </h1>
+        <p class="lead">Join us in celebrating Black creators and streamers shaping the gaming world.</p>
+        <a class="btn btn-primary me-2" href="{% url 'login' %}">Login</a>
+        <a class="btn btn-outline-secondary" href="{% url 'signup' %}"> Signup</a>
+    {% endif %}
+</div>
+{% endblock %}

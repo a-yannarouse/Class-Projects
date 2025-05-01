@@ -1,0 +1,11 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<div class="text-center">
+    <h2>Welcome, {{ user.username }}!</h2>
+    <p class="lead mt-3">Thanks for joining. Would you like to contribute a creator or start browsing?</p>
+    
+    <a href="{% url 'submit_profile' %}" class="btn btn-primary me-3">Submit a Creator</a>
+    <a href="{% url 'profile_list' %}" class="btn btn-outline-secondary">Browse the Archive</a>
+</div>
+{% endblock %}

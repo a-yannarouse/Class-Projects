@@ -1,0 +1,68 @@
+{% extends 'project/base.html' %}
+{% block content %}
+<div class="container" style="max-width: 800px;">
+    <h2 class="mb-4 fw-bold">My Account</h2>
+
+    <!-- User Info -->
+    <div class="card mb-5 shadow-sm">
+        <div class="card-body d-flex align-items-center flex-wrap">
+            {% if user_profile.photo %}
+                <img src="{{ user_profile.photo.url }}" class="rounded-circle me-4 mb-3 mb-md-0" style="width: 120px; height: 120px; object-fit: cover;">
+            {% else %}
+                <div class="bg-secondary text-white text-center rounded-circle me-4" style="width: 120px; height: 120px; line-height: 120px;">
+                    {{ user.username|first|upper }}
+                </div>
+            {% endif %}
+            <div class="flex-grow-1">
+                <p class="mb-1 fs-5"><strong>Username:</strong> {{ user.username }}</p>
+                <p class="mb-1 fs-6"><strong>Email:</strong> {{ user.email }}</p>
+                <p class="mb-2"><strong>Interests:</strong>
+                    {% for tag in user_profile.interests.all %}
+                        <span class="badge bg-primary me-1">{{ tag.name }}</span>
+                    {% empty %}
+                        <em>No interests listed</em>
+                    {% endfor %}
+                </p>
+            </div>
+            <div class="ms-auto">
+                <a href="{% url 'edit_user_profile' %}" class="btn btn-outline-secondary">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bookmarked Creators -->
+    <h4 class="mb-3">Bookmarked Creators</h4>
+    <ul class="list-group mb-5 shadow-sm">
+        {% for profile in bookmarks %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{% url 'profile_detail' profile.pk %}" class="fw-medium">{{ profile.name }}</a>
+                <span class="badge bg-info text-dark">{{ profile.profile_type }}</span>
+            </li>
+        {% empty %}
+            <li class="list-group-item"><em>You haven’t bookmarked any creators yet.</em></li>
+        {% endfor %}
+    </ul>
+
+    <!-- My Submissions -->
+    <h4 class="mb-3">My Submissions</h4>
+    <ul class="list-group shadow-sm">
+        {% for submission in submissions %}
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div>
+                    <strong>{{ submission.name }}</strong> — {{ submission.profile_type }} <br>
+                    <small class="text-muted">Submitted on {{ submission.date_submitted|date:"F j, Y" }}</small>
+                </div>
+                {% if submission.status == "approved" %}
+                    <span class="badge bg-success mt-2">Approved</span>
+                {% elif submission.status == "rejected" %}
+                    <span class="badge bg-danger mt-2">Rejected</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark mt-2">Pending</span>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li class="list-group-item"><em>You haven’t submitted any profiles yet.</em></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

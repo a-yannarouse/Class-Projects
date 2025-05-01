@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     "quotes",
     "hw",
     "formdata",
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
     "mini_fb",
     "marathon_analytics",
     "voter_analytics",
+    "project",
 ]
 
 MIDDLEWARE = [
@@ -146,3 +149,8 @@ CS_DEPLOYMENT_HOSTNAME = 'cs-webapps.bu.edu'
 if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
     STATIC_URL = '/yanni620/static/'
     MEDIA_URL = '/yanni620/media/'
+
+# Load environment variables from .env file for Gemini API key
+load_dotenv()
+
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')

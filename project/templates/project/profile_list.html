@@ -1,0 +1,43 @@
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h2>All Creators</h2>
+<div class="row">
+    {% for profile in profiles %}
+        <div class="col-md-4 mb-4 d-flex">
+            <div class="card h-100 w-100 shadow-sm">
+                {% if profile.photo %}
+                    <div class="profile-img-wrapper">
+                        <img src="{{ profile.photo.url }}" alt="{{ profile.name }}">
+                    </div>
+                {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                        <span class="text-muted">No Image</span>
+                    </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <h5 class="card-title">{{ profile.name }}</h5>
+                        <p class="card-text"><strong>Type:</strong> {{ profile.profile_type }}</p>
+                    </div>
+                    <a href="{% url 'profile_detail' profile.pk %}" class="btn btn-primary mt-2">View Profile</a>
+                </div>
+                <div class="card-footer">
+                    <strong>Tags:</strong>
+                    {% if profile.tags.all %}
+                        {% for tag in profile.tags.all %}
+                            <span class="badge bg-secondary me-1">{{ tag.name }}</span>
+                        {% endfor %}
+                    {% else %}
+                        <em>No tags</em>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
