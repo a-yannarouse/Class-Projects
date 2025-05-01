@@ -1,3 +1,7 @@
+# File: forms.py
+# Author: A'Yanna Rouse (yanni620@bu.edu), 04/18/2025
+# Description: This file contains the forms for the project app.
+
 from django import forms
 from .models import *
 

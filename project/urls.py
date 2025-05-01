@@ -1,6 +1,6 @@
 # File: urls.py
 # Author: A'Yanna Rouse (yanni620@bu.edu), 04/18/2025
-# Description: Urls for each template page of the project app
+# Description: Urls for each template page of the project app.
 
 from django.urls import path # type: ignore
 from .views import *
