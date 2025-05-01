@@ -1,6 +1,6 @@
 # File: admin.py
 # Author: A'Yanna Rouse (yanni620@bu.edu), 04/18/2025
-# Description: This file contains the admin settings for the project models.
+# Description: This file contains the admin settings for the project models. 
 
 from django.contrib import admin
 from .models import Submission, Profile, Tag, Work, UserProfile

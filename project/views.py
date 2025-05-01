@@ -1,6 +1,6 @@
 # File: views.py
 # Author: A'Yanna Rouse (yanni620@bu.edu), 04/18/2025
-# Description: These are for the views for the project.
+# Description: These are for the views for the project. 
 
 from django.shortcuts import render
 

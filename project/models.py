@@ -1,6 +1,6 @@
 # File: models.py
 # Author: A'Yanna Rouse (yanni620@bu.edu), 04/15/2025
-# Description: This file contains the models for the Project objects.
+# Description: This file contains the models for the Project objects. 
 
 from django.db import models #type: ignore
 from django.contrib.auth.models import User as AuthUser # type: ignore
