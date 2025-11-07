@@ -238,7 +238,7 @@ class AddFriendView(LoginRequiredMixin, LoggedInUserProfileMixin, View):
         profile.add_friend(friend)
 
         # redirect to the profile page
-        return redirect(f"{reverse('show_profile')}?pk={friend_pk}")
+        return redirect('show_profile', pk=friend_pk)
     
 class ShowFriendSuggestionsView(LoginRequiredMixin, LoggedInUserProfileMixin, DetailView):
     ''' Defines a view class to show friend suggestions. '''
